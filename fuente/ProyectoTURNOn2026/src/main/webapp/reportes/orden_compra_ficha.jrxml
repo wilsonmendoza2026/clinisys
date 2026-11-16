@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteOrdenCompraIndividual" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenNoDataType="NoPages">
+    <parameter name="id_orden" class="java.lang.Integer"/>
+    <queryString language="SQL">
+        <![CDATA[
+SELECT
+    o.id_orden,
+    TO_CHAR(o.fecha_emision, 'DD/MM/YYYY') AS fecha_emision,
+    COALESCE(p.razon_social, 'Sin Proveedor') AS proveedor,
+    COALESCE(o.estado, 'PENDIENTE') AS estado,
+    i.nombre_insumo,
+    CAST(d.cantidad AS INTEGER) AS cantidad,
+    CAST(d.precio_unitario AS NUMERIC(18,2)) AS precio_unitario,
+    CAST(COALESCE(d.cantidad * d.precio_unitario, 0) AS NUMERIC(18,2)) AS subtotal
+FROM ordenes_compras o
+LEFT JOIN proveedores p ON o.id_proveedor = p.id_proveedor
+LEFT JOIN detalles_ordenes_compras d ON d.id_orden = o.id_orden
+LEFT JOIN insumos i ON d.id_insumo = i.id_insumo
+WHERE o.id_orden = $P{id_orden}
+ORDER BY i.nombre_insumo NULLS LAST
+        ]]>
+    </queryString>
+    <field name="id_orden" class="java.lang.Integer"/>
+    <field name="fecha_emision" class="java.lang.String"/>
+    <field name="proveedor" class="java.lang.String"/>
+    <field name="estado" class="java.lang.String"/>
+    <field name="nombre_insumo" class="java.lang.String"/>
+    <field name="cantidad" class="java.lang.Integer"/>
+    <field name="precio_unitario" class="java.math.BigDecimal"/>
+    <field name="subtotal" class="java.math.BigDecimal"/>
+    <variable name="totalOrden" class="java.math.BigDecimal" calculation="Sum">
+        <variableExpression><![CDATA[$F{subtotal} == null ? java.math.BigDecimal.ZERO : $F{subtotal}]]></variableExpression>
+    </variable>
+    <title>
+        <band height="190" splitType="Stretch">
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="62" backcolor="#008855" mode="Opaque"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="0" y="2" width="555" height="32" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="18" isBold="true"/></textElement>
+                <text><![CDATA[ClinicSys]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="37" width="555" height="18" forecolor="#E6F2ED"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="10"/></textElement>
+                <text><![CDATA[ORDEN DE COMPRA — DOCUMENTO PARA EL PROVEEDOR]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="75" width="555" height="25" forecolor="#2E4053"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="14" isBold="true"/></textElement>
+                <text><![CDATA[Datos de la Orden]]></text>
+            </staticText>
+            <rectangle>
+                <reportElement x="0" y="103" width="555" height="76" forecolor="#D4DADD" backcolor="#F7F9F9" mode="Opaque"/>
+                <graphicElement><pen lineWidth="0.7" lineColor="#D4DADD"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="12" y="110" width="100" height="20" forecolor="#34495E"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="10" isBold="true"/></textElement>
+                <text><![CDATA[N.º de orden:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="112" y="110" width="160" height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="10"/></textElement>
+                <textFieldExpression><![CDATA[$F{id_orden}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="300" y="110" width="72" height="20" forecolor="#34495E"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="10" isBold="true"/></textElement>
+                <text><![CDATA[Emisión:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="372" y="110" width="171" height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="10"/></textElement>
+                <textFieldExpression><![CDATA[$F{fecha_emision} == null ? "-" : $F{fecha_emision}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="12" y="138" width="100" height="20" forecolor="#34495E"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="10" isBold="true"/></textElement>
+                <text><![CDATA[Proveedor:]]></text>
+            </staticText>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="112" y="138" width="431" height="20"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="10"/></textElement>
+                <textFieldExpression><![CDATA[$F{proveedor} == null ? "Sin Proveedor" : $F{proveedor}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="12" y="160" width="100" height="15" forecolor="#34495E"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+                <text><![CDATA[Estado:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="112" y="160" width="431" height="15"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{estado} == null ? "-" : $F{estado}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="181" width="555" height="9" forecolor="#2E4053"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="1"/></textElement>
+                <text><![CDATA[]]></text>
+            </staticText>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="30" splitType="Stretch">
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="28" backcolor="#2E4053" mode="Opaque"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="8" y="0" width="239" height="28" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+                <text><![CDATA[DESCRIPCIÓN DEL INSUMO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="247" y="0" width="60" height="28" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+                <text><![CDATA[CANTIDAD]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="307" y="0" width="120" height="28" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+                <text><![CDATA[PRECIO UNITARIO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="427" y="0" width="120" height="28" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="9" isBold="true"/></textElement>
+                <text><![CDATA[SUBTOTAL]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="27" splitType="Stretch">
+            <printWhenExpression><![CDATA[$F{nombre_insumo} != null]]></printWhenExpression>
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="26" forecolor="#D4DADD" backcolor="#FFFFFF" mode="Opaque"/>
+                <graphicElement><pen lineWidth="0.45" lineColor="#D4DADD"/></graphicElement>
+            </rectangle>
+            <textField isStretchWithOverflow="true">
+                <reportElement x="8" y="2" width="239" height="22"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{nombre_insumo}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0">
+                <reportElement x="247" y="2" width="60" height="22"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00 'Gs.'">
+                <reportElement x="307" y="2" width="120" height="22"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{precio_unitario}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#,##0.00 'Gs.'">
+                <reportElement x="427" y="2" width="120" height="22"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="9"/></textElement>
+                <textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+
+    <pageFooter>
+        <band height="25" splitType="Stretch">
+            <line>
+                <reportElement x="0" y="2" width="555" height="1" forecolor="#008855"/>
+                <graphicElement><pen lineWidth="1.0"/></graphicElement>
+            </line>
+            <textField>
+                <reportElement x="0" y="5" width="150" height="17" forecolor="#666666"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="8"/></textElement>
+                <textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField pattern="dd/MM/yyyy HH:mm">
+                <reportElement x="355" y="5" width="200" height="17" forecolor="#666666"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="8"/></textElement>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+    <summary>
+        <band height="66" splitType="Stretch">
+            <line>
+                <reportElement x="0" y="5" width="555" height="1" forecolor="#008855"/>
+                <graphicElement><pen lineWidth="1.2"/></graphicElement>
+            </line>
+            <staticText>
+                <reportElement x="290" y="13" width="135" height="27" forecolor="#2E4053"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="11" isBold="true"/></textElement>
+                <text><![CDATA[TOTAL DE LA ORDEN:]]></text>
+            </staticText>
+            <textField pattern="#,##0.00 'Gs.'">
+                <reportElement x="427" y="13" width="120" height="27" forecolor="#008855"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="11" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$V{totalOrden}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="45" width="555" height="16" forecolor="#666666"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" isItalic="true"/></textElement>
+                <text><![CDATA[Documento de solicitud de compra. Los precios y cantidades corresponden a los ítems detallados en esta orden.]]></text>
+            </staticText>
+        </band>
+    </summary>
+</jasperReport>

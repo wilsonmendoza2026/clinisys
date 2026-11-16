@@ -1,0 +1,5 @@
+Corrección definitiva del error HTTP 500 en roles.jsp
+
+Se eliminó completamente el uso del objeto request dentro de declaraciones JSP.
+La pantalla actual se identifica de forma compatible desde la clase JSP en ejecución.
+El WAR fue recompilado y el ZIP fue verificado sin errores.

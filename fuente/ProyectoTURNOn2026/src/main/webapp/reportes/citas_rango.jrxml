@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CitasPorFechas" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenNoDataType="NoPages" uuid="1f59db8c-037c-4cc5-bf7c-11039800afd5">
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F4F6F7"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="MODO_GENERAL" class="java.lang.Boolean"/><parameter name="FECHA_INICIO" class="java.sql.Date"/>
+	<parameter name="FECHA_FIN" class="java.sql.Date"/><parameter name="ESPECIALIDAD" class="java.lang.String"/><parameter name="ESTADO" class="java.lang.String"/>
+	<queryString language="SQL"><![CDATA[SELECT c.id_cita,
+       COALESCE(CONCAT(p.apellido, ', ', p.nombre), 'Sin Paciente') AS paciente,
+       COALESCE(CONCAT(m.apellido, ', ', m.nombre), 'Sin Médico') AS medico,
+       COALESCE(e.nombre_especialidad, '-') AS especialidad,
+       COALESCE(s.nombre_servicio, '-') AS servicio,
+       c.fecha, c.hora,
+       COALESCE(c.estado, '-') AS estado,
+       COALESCE(c.estado_pago, '-') AS estado_pago
+FROM citas c
+LEFT JOIN pacientes p ON c.id_paciente = p.id_paciente
+LEFT JOIN medicos m ON c.id_medico = m.id_medico
+LEFT JOIN especialidades e ON m.id_especialidad = e.id_especialidad
+LEFT JOIN servicios s ON c.id_servicio = s.id_servicio
+WHERE ($P{MODO_GENERAL} = TRUE OR c.fecha BETWEEN $P{FECHA_INICIO} AND $P{FECHA_FIN})
+AND ($P{ESTADO} IS NULL OR UPPER(c.estado) = UPPER($P{ESTADO})) AND ($P{ESPECIALIDAD} IS NULL OR e.nombre_especialidad ILIKE '%' || $P{ESPECIALIDAD} || '%') ORDER BY c.fecha, c.hora, c.id_cita]]></queryString>
+	<field name="id_cita" class="java.lang.Integer"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="hora" class="java.sql.Time"/>
+	<field name="paciente" class="java.lang.String"/>
+	<field name="medico" class="java.lang.String"/>
+	<field name="especialidad" class="java.lang.String"/>
+	<field name="servicio" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="estado_pago" class="java.lang.String"/>
+	<background><band splitType="Stretch"/></background>
+	<title>
+		<band height="100" splitType="Stretch">
+			<rectangle radius="5"><reportElement x="0" y="0" width="802" height="65" backcolor="#008A52" uuid="8ea0c2d4-7e8e-46a4-bde1-fc5cd1f143c6"/><graphicElement><pen lineWidth="0.0"/></graphicElement></rectangle>
+			<staticText><reportElement x="0" y="5" width="802" height="32" forecolor="#FFFFFF" uuid="65958676-ee4d-4e65-9e83-f1b2eedfe56d"/><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="24" isBold="true"/></textElement><text><![CDATA[ClinicSys]]></text></staticText>
+			<staticText><reportElement x="0" y="37" width="802" height="20" forecolor="#FFFFFF" uuid="efc5f3e4-b4b1-4901-b108-e4767b692795"/><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="11"/></textElement><text><![CDATA[INFORME DE CITAS POR FECHAS | San Lorenzo, Paraguay – Tel. 0986-896-425]]></text></staticText>
+			<textField><reportElement x="0" y="72" width="500" height="20" forecolor="#2C3E50" uuid="df2b6d0a-07ae-43b6-9621-244f279fbb37"/><textElement verticalAlignment="Middle"><font fontName="Arial" size="11" isBold="true"/></textElement><textFieldExpression><![CDATA["Período: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{FECHA_INICIO}) + " al " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{FECHA_FIN})]]></textFieldExpression></textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText><reportElement mode="Opaque" x="0" y="0" width="40" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="70e08fed-e26f-4b2d-99be-779b28c915fe"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[ID]]></text></staticText>
+			<staticText><reportElement mode="Opaque" x="40" y="0" width="70" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="e9e83249-617f-4239-aec8-a4a57bb4ab05"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[Fecha]]></text></staticText>
+			<staticText><reportElement mode="Opaque" x="110" y="0" width="50" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="ac9049c0-e2e8-48aa-8b46-b2922186e946"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[Hora]]></text></staticText>
+			<staticText><reportElement mode="Opaque" x="160" y="0" width="160" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="35d5d361-31c2-4205-8d13-3893149a16e1"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[Paciente]]></text></staticText>
+			<staticText><reportElement mode="Opaque" x="320" y="0" width="140" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="80a25e61-0124-401b-aad1-eac409623a40"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[Médico]]></text></staticText>
+			<staticText><reportElement mode="Opaque" x="460" y="0" width="110" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="15ca25fb-d440-43af-b2ba-eb9d42c4f077"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[Especialidad]]></text></staticText>
+			<staticText><reportElement mode="Opaque" x="570" y="0" width="100" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="67433152-90ff-4714-8945-278ed70cf18c"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[Servicio]]></text></staticText>
+			<staticText><reportElement mode="Opaque" x="670" y="0" width="66" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="c22dc9e6-1f6b-4429-a799-bc6968772656"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[Estado]]></text></staticText>
+			<staticText><reportElement mode="Opaque" x="736" y="0" width="66" height="28" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="012ef64d-3911-4824-9c9c-c5eb48ad47e3"/><box><pen lineWidth="0.5" lineColor="#BDC3C7"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="9" isBold="true"/></textElement><text><![CDATA[Pago]]></text></staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="20" uuid="2e1339f5-1563-4ca9-9bec-4d7424b55442"/><box><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{id_cita}]]></textFieldExpression></textField>
+			<textField pattern="dd/MM/yyyy"><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="40" y="0" width="70" height="20" uuid="0945496b-c3de-4c03-a6e8-e2a89a70fd7b"/><box><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression></textField>
+			<textField pattern="HH:mm"><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="110" y="0" width="50" height="20" uuid="488b341e-1c2f-4543-92fb-7e0db17ce4a7"/><box><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{hora}]]></textFieldExpression></textField>
+			<textField><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="160" y="0" width="160" height="20" uuid="478bbb77-eb56-4639-b7d3-1d8340a795cc"/><box leftPadding="5"><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{paciente}]]></textFieldExpression></textField>
+			<textField><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="320" y="0" width="140" height="20" uuid="907442bd-3cff-4be6-8e4c-4bf349b4decc"/><box leftPadding="5"><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{medico}]]></textFieldExpression></textField>
+			<textField><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="460" y="0" width="110" height="20" uuid="7ffee7cc-f99e-418f-aa8a-b2586788fc03"/><box leftPadding="5"><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{especialidad}]]></textFieldExpression></textField>
+			<textField><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="570" y="0" width="100" height="20" uuid="04957657-c64e-4bcd-8ef3-3e2104ce21e7"/><box leftPadding="5"><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{servicio}]]></textFieldExpression></textField>
+			<textField><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="670" y="0" width="66" height="20" uuid="c376408e-9814-46eb-8a44-2e6b4027b896"/><box><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression></textField>
+			<textField><reportElement style="Zebra" positionType="Float" stretchType="RelativeToTallestObject" x="736" y="0" width="66" height="20" uuid="b8cd4176-4c39-48bd-b2f5-9b39b386d72b"/><box><pen lineWidth="0.5" lineColor="#DCDCDC"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="Arial" size="8"/></textElement><textFieldExpression><![CDATA[$F{estado_pago}]]></textFieldExpression></textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<line><reportElement x="0" y="5" width="802" height="1" forecolor="#008A52" uuid="2c81ba75-5adf-41fb-8f63-47e4f9c82856"/><graphicElement><pen lineWidth="1.5"/></graphicElement></line>
+			<textField><reportElement x="0" y="10" width="150" height="18" forecolor="#7F8C8D" uuid="bfad8aaa-c6c0-4b86-a44f-908a9849fc7a"/><textElement verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement><textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression></textField>
+			<textField pattern="dd/MM/yyyy HH:mm"><reportElement x="652" y="10" width="150" height="18" forecolor="#7F8C8D" uuid="11bd24e1-f260-4e42-aec3-3c31f381393e"/><textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="Arial" size="9"/></textElement><textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression></textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Prevent">
+			<rectangle><reportElement mode="Opaque" x="0" y="10" width="802" height="32" backcolor="#EAF6F0" uuid="c536f797-53d4-4fe0-bece-d5402cdd14a2"/><graphicElement><pen lineWidth="0.5" lineColor="#008A52"/></graphicElement></rectangle>
+			<staticText><reportElement x="10" y="14" width="300" height="20" forecolor="#2C3E50" uuid="9b323d71-0c63-4922-b764-f5f2a8025bcc"/><textElement verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement><text><![CDATA[Total de registros del período]]></text></staticText>
+			<textField><reportElement x="652" y="14" width="140" height="20" forecolor="#2C3E50" uuid="bbdaea8b-f55b-4db4-9664-53bef2560449"/><textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="Arial" size="10" isBold="true"/></textElement><textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression></textField>
+		</band>
+	</summary>
+</jasperReport>

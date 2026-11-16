@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoCategorias" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c251fc03-bf9e-45cf-ab8d-6de65788ae4c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT id_categoria, descripcion_categoria, estado_categoria FROM categorias ORDER BY id_categoria;]]>
+	</queryString>
+	<field name="id_categoria" class="java.lang.Integer"/>
+	<field name="descripcion_categoria" class="java.lang.String"/>
+	<field name="estado_categoria" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="802" height="65" backcolor="#007A4B" uuid="1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="5" width="802" height="30" forecolor="#FFFFFF" uuid="8ca63c4a-54de-4752-bdb2-8d85ef528c42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ClinicSys]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="35" width="802" height="20" forecolor="#FFFFFF" uuid="889a6884-366b-4dfd-aead-f15d3964ed1c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE GENERAL DE CATEGORÍAS  |  San Lorenzo, Paraguay – Tel. 0986-896-425]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="100" height="25" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="a662930f-f698-480f-97ad-5db81f75a053"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="100" y="0" width="550" height="25" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="e1181231-3955-465e-9c1a-6570c1b0e535"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoría / Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="650" y="0" width="152" height="25" forecolor="#FFFFFF" backcolor="#2C3E50" uuid="008f220c-e47f-4717-8cc4-4ff7b2f821cb"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" forecolor="#333333" uuid="7fafa353-7f48-4abe-a2f1-3fb2c2778ed8"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<topPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<leftPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<bottomPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<rightPen lineWidth="0.5" lineColor="#E0E0E0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_categoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="550" height="20" forecolor="#333333" uuid="2450250f-6289-408c-a02d-0fd16b00d05d"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<topPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<leftPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<bottomPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<rightPen lineWidth="0.5" lineColor="#E0E0E0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion_categoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="650" y="0" width="152" height="20" forecolor="#333333" uuid="40b2b34b-dba5-4999-9785-165c1fd1f97b"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<topPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<leftPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<bottomPen lineWidth="0.5" lineColor="#E0E0E0"/>
+					<rightPen lineWidth="0.5" lineColor="#E0E0E0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado_categoria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="5" width="200" height="20" forecolor="#888888" uuid="6c55772e-0c5c-4db8-9544-ec45f7e022ab"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="602" y="5" width="200" height="20" forecolor="#888888" uuid="c2a01817-ba00-4b2b-bde0-0041a6b0af1f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

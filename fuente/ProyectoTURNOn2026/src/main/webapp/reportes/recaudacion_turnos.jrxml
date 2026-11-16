@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recaudacion_turnos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenNoDataType="NoDataSection">
+  <property name="ireport.zoom" value="1.0"/>
+  <property name="ireport.x" value="0"/>
+  <property name="ireport.y" value="0"/>
+  <parameter name="FECHA_CAJA" class="java.sql.Date"/>
+  <queryString language="SQL"><![CDATA[
+WITH eventos AS (
+    SELECT a.fecha, a.id, a.estado, a.id_usuario, a.fecha_evento,
+           LEAD(a.estado) OVER (PARTITION BY a.fecha ORDER BY a.fecha_evento, a.id) AS estado_siguiente,
+           LEAD(a.id_usuario) OVER (PARTITION BY a.fecha ORDER BY a.fecha_evento, a.id) AS id_cierre,
+           LEAD(a.fecha_evento) OVER (PARTITION BY a.fecha ORDER BY a.fecha_evento, a.id) AS fecha_cierre
+      FROM registro_caja_auditoria a
+     WHERE a.fecha = $P{FECHA_CAJA}
+), turnos AS (
+    SELECT ROW_NUMBER() OVER (ORDER BY fecha_evento, id) AS turno,
+           fecha, fecha_evento AS fecha_apertura,
+           CASE WHEN estado_siguiente = 'CERRADA' THEN fecha_cierre ELSE CURRENT_TIMESTAMP END AS fecha_fin,
+           id_usuario AS id_apertura,
+           CASE WHEN estado_siguiente = 'CERRADA' THEN id_cierre ELSE NULL END AS id_cierre
+      FROM eventos
+     WHERE estado = 'ABIERTA' AND (estado_siguiente = 'CERRADA' OR estado_siguiente IS NULL)
+)
+SELECT t.turno, t.fecha,
+       t.fecha_apertura, t.fecha_fin,
+       ua.usuario AS cajero_apertura,
+       COALESCE(uc.usuario, 'Turno abierto') AS cajero_cierre,
+       COALESCE(uv.usuario, 'Sin ventas') AS cajero_venta,
+       COALESCE(mp.descripcion, 'Sin movimientos') AS metodo_pago,
+       COUNT(v.id_venta) AS cantidad_facturas,
+       COALESCE(SUM(v.total_venta), 0)::numeric(14,2) AS total_recaudado
+  FROM turnos t
+  LEFT JOIN usuarios ua ON ua.id = t.id_apertura
+  LEFT JOIN usuarios uc ON uc.id = t.id_cierre
+  LEFT JOIN ventas v ON v.fecha_venta = t.fecha
+       AND v.fecha_hora_venta >= t.fecha_apertura
+       AND v.fecha_hora_venta < t.fecha_fin
+       AND v.estado = 'COBRADO'
+  LEFT JOIN usuarios uv ON uv.id = v.id_cajero
+  LEFT JOIN metodos_pago mp ON mp.id_metodo = v.id_metodo
+ GROUP BY t.turno, t.fecha, t.fecha_apertura, t.fecha_fin, ua.usuario, uc.usuario, uv.usuario, mp.descripcion
+ ORDER BY t.turno, cajero_venta, metodo_pago
+  ]]></queryString>
+  <field name="turno" class="java.lang.Long"/>
+  <field name="fecha" class="java.sql.Date"/>
+  <field name="fecha_apertura" class="java.sql.Timestamp"/>
+  <field name="fecha_fin" class="java.sql.Timestamp"/>
+  <field name="cajero_apertura" class="java.lang.String"/>
+  <field name="cajero_cierre" class="java.lang.String"/>
+  <field name="cajero_venta" class="java.lang.String"/>
+  <field name="metodo_pago" class="java.lang.String"/>
+  <field name="cantidad_facturas" class="java.lang.Long"/>
+  <field name="total_recaudado" class="java.math.BigDecimal"/>
+  <variable name="SUMA_TOTAL" class="java.math.BigDecimal" calculation="Sum">
+    <variableExpression><![CDATA[$F{total_recaudado}]]></variableExpression>
+  </variable>
+  <title>
+    <band height="62">
+      <staticText><reportElement x="0" y="0" width="802" height="24"/><textElement textAlignment="Center"><font size="17" isBold="true"/></textElement><text><![CDATA[CLINICSYS - RECAUDACIÓN POR TURNOS Y CAJEROS]]></text></staticText>
+      <textField><reportElement x="0" y="28" width="802" height="20"/><textElement textAlignment="Center"><font size="11"/></textElement><textFieldExpression><![CDATA["Fecha: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{FECHA_CAJA})]]></textFieldExpression></textField>
+      <staticText><reportElement x="0" y="49" width="802" height="12"/><textElement textAlignment="Center"><font size="8"/></textElement><text><![CDATA[Desglose de cobros agrupado por turno, cajero y método de pago]]></text></staticText>
+    </band>
+  </title>
+  <columnHeader>
+    <band height="29">
+      <staticText><reportElement mode="Opaque" x="0" y="0" width="34" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Turno]]></text></staticText>
+      <staticText><reportElement mode="Opaque" x="34" y="0" width="83" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Apertura]]></text></staticText>
+      <staticText><reportElement mode="Opaque" x="117" y="0" width="83" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Cierre]]></text></staticText>
+      <staticText><reportElement mode="Opaque" x="200" y="0" width="90" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Abrió caja]]></text></staticText>
+      <staticText><reportElement mode="Opaque" x="290" y="0" width="90" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Cerró caja]]></text></staticText>
+      <staticText><reportElement mode="Opaque" x="380" y="0" width="100" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Cajero de la venta]]></text></staticText>
+      <staticText><reportElement mode="Opaque" x="480" y="0" width="112" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Método de pago]]></text></staticText>
+      <staticText><reportElement mode="Opaque" x="592" y="0" width="65" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Facturas]]></text></staticText>
+      <staticText><reportElement mode="Opaque" x="657" y="0" width="145" height="29" backcolor="#263238" forecolor="#FFFFFF"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7" isBold="true"/></textElement><text><![CDATA[Recaudado (Gs.)]]></text></staticText>
+    </band>
+  </columnHeader>
+  <detail>
+    <band height="24">
+      <textField><reportElement x="0" y="0" width="34" height="24"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{turno}]]></textFieldExpression></textField>
+      <textField pattern="dd/MM HH:mm"><reportElement x="34" y="0" width="83" height="24"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{fecha_apertura}]]></textFieldExpression></textField>
+      <textField pattern="dd/MM HH:mm"><reportElement x="117" y="0" width="83" height="24"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{fecha_fin}]]></textFieldExpression></textField>
+      <textField isStretchWithOverflow="true"><reportElement x="200" y="0" width="90" height="24"/><textElement verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{cajero_apertura}]]></textFieldExpression></textField>
+      <textField isStretchWithOverflow="true"><reportElement x="290" y="0" width="90" height="24"/><textElement verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{cajero_cierre}]]></textFieldExpression></textField>
+      <textField isStretchWithOverflow="true"><reportElement x="380" y="0" width="100" height="24"/><textElement verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{cajero_venta}]]></textFieldExpression></textField>
+      <textField isStretchWithOverflow="true"><reportElement x="480" y="0" width="112" height="24"/><textElement verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{metodo_pago}]]></textFieldExpression></textField>
+      <textField pattern="#,##0"><reportElement x="592" y="0" width="65" height="24"/><textElement textAlignment="Right" verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{cantidad_facturas}]]></textFieldExpression></textField>
+      <textField pattern="#,##0 'Gs.'"><reportElement x="657" y="0" width="145" height="24"/><textElement textAlignment="Right" verticalAlignment="Middle"><font size="7"/></textElement><textFieldExpression><![CDATA[$F{total_recaudado}]]></textFieldExpression></textField>
+      <line><reportElement x="0" y="23" width="802" height="1" forecolor="#D8DEE3"/></line>
+    </band>
+  </detail>
+  <summary>
+    <band height="48">
+      <staticText><reportElement mode="Opaque" x="0" y="5" width="657" height="28" backcolor="#D9F2E3"/><textElement verticalAlignment="Middle"><font size="10" isBold="true"/></textElement><text><![CDATA[TOTAL DEL DÍA POR TURNOS]]></text></staticText>
+      <textField pattern="#,##0 'Gs.'"><reportElement mode="Opaque" x="657" y="5" width="145" height="28" backcolor="#D9F2E3"/><textElement textAlignment="Right" verticalAlignment="Middle"><font size="10" isBold="true"/></textElement><textFieldExpression><![CDATA[$V{SUMA_TOTAL} == null ? java.math.BigDecimal.ZERO : $V{SUMA_TOTAL}]]></textFieldExpression></textField>
+    </band>
+  </summary>
+  <noData>
+    <band height="100">
+      <staticText><reportElement x="0" y="20" width="802" height="40"/><textElement textAlignment="Center" verticalAlignment="Middle"><font size="12"/></textElement><text><![CDATA[No hay turnos auditados para esta fecha. Los turnos solo se pueden desglosar desde que se registra su apertura y cierre.]]></text></staticText>
+    </band>
+  </noData>
+</jasperReport>

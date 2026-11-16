@@ -1,0 +1,11 @@
+Corrección puntual del informe resumido de diagnósticos
+
+Se eliminó una unión LEFT JOIN duplicada de la consulta de diagnosticos_rango,
+que provocaba el error SQL "Error executing SQL statement for: DiagnosticosPorFechas".
+
+Se regeneraron:
+- diagnosticos_rango.jrxml
+- diagnosticos_rango.jasper
+- ProyectoTURNOn2026.war
+
+El ZIP fue verificado íntegramente.

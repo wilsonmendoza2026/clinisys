@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gestiondehabitaciones_individual" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e85cbb36-daa7-4cf3-8813-bf405cb92f6f">
+	<property name="ireport.zoom" value="1.21"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_habitacion" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT id_habitacion, nro_habitacion, tipo, precio_dia, estado FROM habitaciones WHERE id_habitacion = $P{id_habitacion}]]>
+	</queryString>
+	<field name="id_habitacion" class="java.lang.Integer"/>
+	<field name="nro_habitacion" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="precio_dia" class="java.math.BigDecimal"/>
+	<field name="estado" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="555" height="70" backcolor="#008855" uuid="1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="8" width="555" height="32" forecolor="#FFFFFF" uuid="a84b1234-5678-90ab-cdef-1234567890ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ClinicSys]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="555" height="20" forecolor="#E6F2ED" uuid="b84b1234-5678-90ab-cdef-1234567890bc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FICHA DE HABITACIÓN  |  San Lorenzo, Paraguay – Tel. 0986-896-425]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="200" splitType="Stretch">
+			<!-- ID Habitación -->
+			<staticText>
+				<reportElement mode="Opaque" x="30" y="15" width="160" height="25" forecolor="#FFFFFF" backcolor="#2E4053" uuid="d1111111-1111-1111-1111-111111111111"/>
+				<box leftPadding="10"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID Habitación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="15" width="335" height="25" uuid="d2222222-2222-2222-2222-222222222222"/>
+				<box leftPadding="10">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_habitacion}]]></textFieldExpression>
+			</textField>
+
+			<!-- Número de Habitación -->
+			<staticText>
+				<reportElement mode="Opaque" x="30" y="48" width="160" height="25" forecolor="#FFFFFF" backcolor="#2E4053" uuid="d3333333-3333-3333-3333-333333333333"/>
+				<box leftPadding="10"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Habitación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="48" width="335" height="25" uuid="d4444444-4444-4444-4444-444444444444"/>
+				<box leftPadding="10">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nro_habitacion}]]></textFieldExpression>
+			</textField>
+
+			<!-- Tipo -->
+			<staticText>
+				<reportElement mode="Opaque" x="30" y="81" width="160" height="25" forecolor="#FFFFFF" backcolor="#2E4053" uuid="d5555555-5555-5555-5555-555555555555"/>
+				<box leftPadding="10"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Habitación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="81" width="335" height="25" uuid="d6666666-6666-6666-6666-666666666666"/>
+				<box leftPadding="10">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+
+			<!-- Precio por Día -->
+			<staticText>
+				<reportElement mode="Opaque" x="30" y="114" width="160" height="25" forecolor="#FFFFFF" backcolor="#2E4053" uuid="d7777777-7777-7777-7777-777777777777"/>
+				<box leftPadding="10"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio por Día:]]></text>
+			</staticText>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="190" y="114" width="335" height="25" uuid="d8888888-8888-8888-8888-888888888888"/>
+				<box leftPadding="10">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio_dia}]]></textFieldExpression>
+			</textField>
+
+			<!-- Estado Actual -->
+			<staticText>
+				<reportElement mode="Opaque" x="30" y="147" width="160" height="25" forecolor="#FFFFFF" backcolor="#2E4053" uuid="d9999999-9999-9999-9999-999999999999"/>
+				<box leftPadding="10"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado Actual:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="147" width="335" height="25" uuid="e0000000-0000-0000-0000-000000000000"/>
+				<box leftPadding="10">
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="555" height="1" forecolor="#008855" uuid="c84b1234-5678-90ab-cdef-1234567890cd"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="355" y="8" width="200" height="20" forecolor="#666666" uuid="e1111111-1111-1111-1111-111111111111"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

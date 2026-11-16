@@ -1,0 +1,8 @@
+Corrección del filtro real de roles
+
+Cuando un rol tiene filas de permisos granulares, estas tienen prioridad y reemplazan
+la herencia de los siete módulos antiguos. Esto permite convertir roles existentes,
+como Recepcionista, sin que Administración siga habilitando todos los referenciales.
+
+Los roles antiguos sin configuración granular mantienen compatibilidad. El menú ya no
+usa el respaldo antiguo cuando detecta configuración granular para el rol actual.

@@ -1,0 +1,17 @@
+Corrección de informes ClinicSys
+
+1. Diagnósticos detallado:
+   - Se corrigió la consulta SQL y la unión con especialidades.
+   - Se sincronizaron los parámetros ESPECIALIDAD y MEDICO.
+   - Se regeneró diagnosticos_rango_detallado.jasper.
+
+2. Filtros por estado:
+   - El controlador ahora recompila automáticamente los informes por rango desde su JRXML actualizado, evitando usar binarios antiguos.
+   - Se regeneraron los Jasper resumidos y detallados de citas, diagnósticos, internaciones, órdenes, recepciones, compras y ventas.
+   - Internaciones filtra por el estado real de la habitación: Disponible, Ocupado o Mantenimiento.
+   - Los demás informes aplican sus estados seleccionados en resumido, detallado y general.
+
+Validación realizada:
+- Maven package correcto.
+- Las 14 plantillas Jasper por rango compilan correctamente.
+- WAR y ZIP verificados sin errores.

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="asignarhorariospersonal" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b5edd59d-2761-435f-a94e-d6a8f9caeabc">
+	<property name="ireport.zoom" value="1.21"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.backgroundcolor" value="#FFFFFF"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+    h.id_horario,
+    CONCAT(e.apellido, ', ', e.nombre) AS enfermero,
+    h.dia_semana,
+    h.turno,
+    CONCAT(h.hora_inicio, ' a ', h.hora_fin) AS horario_exacto
+FROM enfermeria_horarios h
+JOIN enfermeria e ON h.id_enfermero = e.id_enfermero
+ORDER BY h.id_horario ASC;]]>
+	</queryString>
+	<field name="id_horario" class="java.lang.Integer"/>
+	<field name="enfermero" class="java.lang.String"/>
+	<field name="dia_semana" class="java.lang.String"/>
+	<field name="turno" class="java.lang.String"/>
+	<field name="horario_exacto" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="802" height="70" backcolor="#008855" uuid="1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="8" width="802" height="32" forecolor="#FFFFFF" uuid="8ca63c4a-54de-4752-bdb2-8d85ef528c42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ClinicSys]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="802" height="20" forecolor="#E6F2ED" uuid="889a6884-366b-4dfd-aead-f15d3964ed1c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[REPORTE GENERAL DE ASIGNACIÓN DE HORARIOS  |  San Lorenzo, Paraguay – Tel. 0986-896-425]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="60" height="28" forecolor="#FFFFFF" backcolor="#2E4053" uuid="a662930f-f698-480f-97ad-5db81f75a053"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#2E4053"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="60" y="0" width="250" height="28" forecolor="#FFFFFF" backcolor="#2E4053" uuid="e1181231-3955-465e-9c1a-6570c1b0e535"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5" lineColor="#2E4053"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Enfermero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="310" y="0" width="150" height="28" forecolor="#FFFFFF" backcolor="#2E4053" uuid="008f220c-e47f-4717-8cc4-4ff7b2f821cb"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5" lineColor="#2E4053"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Día]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="460" y="0" width="170" height="28" forecolor="#FFFFFF" backcolor="#2E4053" uuid="d858d49d-aeee-4f03-ace4-c87dfc0eae33"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5" lineColor="#2E4053"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Turno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="630" y="0" width="172" height="28" forecolor="#FFFFFF" backcolor="#2E4053" uuid="f63f0784-c080-451a-8aad-d585aad90139"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#2E4053"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Horario Exacto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="60" height="24" uuid="01fd18d7-1fa1-46c6-bda5-a24e27cdb576"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_horario}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="60" y="0" width="250" height="24" uuid="bddb206b-0eef-4c52-abed-6e3368634d0c"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enfermero} != null ? $F{enfermero} : "-"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="310" y="0" width="150" height="24" uuid="26920060-e5e9-439c-a1e7-4be67317d020"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dia_semana} != null ? $F{dia_semana} : "-"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="460" y="0" width="170" height="24" uuid="97a3cf22-a481-4f02-bd0b-0dc88977ae63"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turno} != null ? $F{turno} : "-"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="630" y="0" width="172" height="24" uuid="7f21b421-68c9-4116-9a0c-21ea95edd435"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horario_exacto} != null ? $F{horario_exacto} : "-"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="802" height="1" forecolor="#008855" uuid="e04a8128-7836-460b-add8-a64151bacd6c"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="8" width="150" height="20" forecolor="#666666" uuid="6c55772e-0c5c-4db8-9544-ec45f7e022ab"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="602" y="8" width="200" height="20" forecolor="#666666" uuid="c2a01817-ba00-4b2b-bde0-0041a6b0af1f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

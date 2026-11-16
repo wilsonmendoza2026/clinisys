@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="enfermeria_individual" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a60810b8-4da4-416b-9f05-3b3c210dfe26">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.backgroundcolor" value="#FFFFFF"/>
+	<parameter name="id_enfermero" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT id_enfermero, nombre, apellido, telefono, email, registro_profesional FROM enfermeria WHERE id_enfermero = $P{id_enfermero}]]>
+	</queryString>
+	<field name="id_enfermero" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="registro_profesional" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="555" height="70" backcolor="#008855" uuid="1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="8" width="555" height="32" forecolor="#FFFFFF" uuid="8ca63c4a-54de-4752-bdb2-8d85ef528c42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ClinicSys]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="555" height="20" forecolor="#E6F2ED" uuid="889a6884-366b-4dfd-aead-f15d3964ed1c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FICHA INDIVIDUAL DE ENFERMERÍA  |  San Lorenzo, Paraguay]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="230" splitType="Stretch">
+			<!-- Encabezado Ficha -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="30" forecolor="#FFFFFF" backcolor="#2E4053" uuid="e1181231-3955-465e-9c1a-6570c1b0e535"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#2E4053"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL PROFESIONAL DE ENFERMERÍA]]></text>
+			</staticText>
+
+			<!-- ID -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="30" width="160" height="30" backcolor="#F4F6F6" uuid="a662930f-f698-480f-97ad-5db81f75a053"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID Enfermero:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="30" width="395" height="30" uuid="01fd18d7-1fa1-46c6-bda5-a24e27cdb576"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_enfermero}]]></textFieldExpression>
+			</textField>
+
+			<!-- Nombre -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="60" width="160" height="30" backcolor="#F4F6F6" uuid="008f220c-e47f-4717-8cc4-4ff7b2f821cb"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="60" width="395" height="30" uuid="bddb206b-0eef-4c52-abed-6e3368634d0c"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre} != null ? $F{nombre} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Apellido -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="90" width="160" height="30" backcolor="#F4F6F6" uuid="d858d49d-aeee-4f03-ace4-c87dfc0eae33"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="90" width="395" height="30" uuid="26920060-e5e9-439c-a1e7-4be67317d020"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellido} != null ? $F{apellido} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Registro Profesional -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="120" width="160" height="30" backcolor="#F4F6F6" uuid="36f3fe70-13dc-4c3b-9598-d3d7cd9624f7"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reg. Profesional:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="120" width="395" height="30" uuid="16f62c60-64a5-492a-9e4c-356666fe25f1"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{registro_profesional} != null ? $F{registro_profesional} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Teléfono -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="150" width="160" height="30" backcolor="#F4F6F6" uuid="f63f0784-c080-451a-8aad-d585aad90139"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="150" width="395" height="30" uuid="97a3cf22-a481-4f02-bd0b-0dc88977ae63"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono} != null ? $F{telefono} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Email -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="180" width="160" height="30" backcolor="#F4F6F6" uuid="45f6a789-1234-4567-8901-abcdef123456"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Email:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="180" width="395" height="30" uuid="7f21b421-68c9-4116-9a0c-21ea95edd435"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{email} != null ? $F{email} : "-"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="555" height="1" forecolor="#008855" uuid="e04a8128-7836-460b-add8-a64151bacd6c"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="8" width="150" height="20" forecolor="#666666" uuid="6c55772e-0c5c-4db8-9544-ec45f7e022ab"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="355" y="8" width="200" height="20" forecolor="#666666" uuid="c2a01817-ba00-4b2b-bde0-0041a6b0af1f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

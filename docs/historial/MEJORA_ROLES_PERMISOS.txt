@@ -1,0 +1,16 @@
+Mejora de Roles y Permisos
+
+Se conservaron los 7 módulos antiguos para compatibilidad con roles existentes.
+La pantalla de roles ahora agrega y muestra 24 módulos granulares:
+- 14 Referenciales.
+- 3 módulos del Proceso 1 - Gestión Médica.
+- 6 módulos del Proceso 2 - Gestión Administrativa y Comercial.
+- Informes.
+
+Cada módulo tiene permisos independientes para Ver, Crear, Editar y Eliminar.
+Se agregó la casilla Marcar todos para seleccionar o deseleccionar todos los permisos.
+
+Los roles existentes no pierden sus permisos antiguos. Los nuevos roles pueden configurarse
+por pantalla, por ejemplo una Recepcionista con acceso solo a módulos seleccionados.
+La validación en servidor también respeta los permisos granulares; la compatibilidad antigua
+se mantiene como respaldo para los roles ya creados.

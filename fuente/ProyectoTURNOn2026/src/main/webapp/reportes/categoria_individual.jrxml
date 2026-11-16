@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="categoria_individual" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="67acfcbf-e35a-48a3-921c-84979b734fbd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_categoria" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+    id_categoria, 
+    descripcion_categoria, 
+    estado_categoria
+FROM categorias
+WHERE id_categoria = $P{id_categoria}]]>
+	</queryString>
+	<field name="id_categoria" class="java.lang.Integer"/>
+	<field name="descripcion_categoria" class="java.lang.String"/>
+	<field name="estado_categoria" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<rectangle radius="8">
+				<reportElement x="0" y="0" width="555" height="65" backcolor="#0B8754" uuid="d6e30b80-1234-4a2b-9876-abc123456789"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="8" width="555" height="28" forecolor="#FFFFFF" uuid="8ca63c4a-54de-4752-bdb2-8d85ef528c42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ClinicSys]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="36" width="555" height="20" forecolor="#FFFFFF" uuid="889a6884-366b-4dfd-aead-f15d3964ed1c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE INDIVIDUAL DE CATEGORÍA  |  San Lorenzo, Paraguay – Tel. 0986-896-425]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="30" backcolor="#34495E" uuid="a1234567-89ab-cdef-0123-456789abcdef"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="30" forecolor="#FFFFFF" uuid="a662930f-f698-480f-97ad-5db81f75a053"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#2C3E50"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="345" height="30" forecolor="#FFFFFF" uuid="e1181231-3955-465e-9c1a-6570c1b0e535"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5" lineColor="#2C3E50"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción de la Categoría]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="0" width="130" height="30" forecolor="#FFFFFF" uuid="45a27891-9c60-4fb1-b845-e65920a40232"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#2C3E50"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="80" height="22" uuid="01fd18d7-1fa1-46c6-bda5-a24e27cdb576"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#E0E0E0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_categoria}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="80" y="0" width="345" height="22" uuid="bddb206b-0eef-4c52-abed-6e3368634d0c"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5" lineColor="#E0E0E0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion_categoria}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="425" y="0" width="130" height="22" uuid="62cd5f8c-4a3e-4530-9b43-2384a5118742"/>
+				<box>
+					<pen lineWidth="0.5" lineColor="#E0E0E0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado_categoria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="5" width="555" height="1" forecolor="#BDC3C7" uuid="e04a8128-7836-460b-add8-a64151bacd6c"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="10" width="200" height="20" forecolor="#7F8C8D" uuid="6c55772e-0c5c-4db8-9544-ec45f7e022ab"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="355" y="10" width="200" height="20" forecolor="#7F8C8D" uuid="c2a01817-ba00-4b2b-bde0-0041a6b0af1f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch"/>
+	</summary>
+</jasperReport>

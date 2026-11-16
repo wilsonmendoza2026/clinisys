@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaventa" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="23dc1d41-ee5e-443e-93e7-f76256147cb2">
+	<property name="ireport.zoom" value="1.21"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID_VENTA" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[49]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MONTO_LETRAS" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CERO GUARANÍES"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RUC_EMISOR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["80000000-1"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+    v.numero_factura,
+    v.fecha_venta,
+    v.estado,
+    COALESCE(NULLIF(v.titular_factura_cedula, ''), p.cedula) AS ruc_ci_paciente,
+    COALESCE(NULLIF(v.titular_factura_nombre, ''), p.nombre || ' ' || p.apellido) ||
+        CASE WHEN NULLIF(v.titular_factura_parentesco, '') IS NULL THEN ''
+             ELSE ' (' || v.titular_factura_parentesco || ')' END AS titular_factura,
+    p.nombre || ' ' || p.apellido AS paciente,
+    p.direccion,
+    p.telefono,
+    COALESCE(m.descripcion, 'EFECTIVO') AS metodo_pago,
+    vd.tipo_item AS tipo,
+    vd.tipo_iva,
+    CASE
+        WHEN vd.tipo_item = 'INSUMO' THEN i.nombre_insumo
+        WHEN vd.tipo_item = 'SERVICIO' THEN COALESCE(s_directo.nombre_servicio, s_cita.nombre_servicio, 'SERVICIO GENERAL')
+        WHEN vd.tipo_item = 'INTERNACION' THEN 'Internación Nro: ' || intn.id_internacion || ' - Hab: ' || h.nro_habitacion
+        ELSE 'OTROS'
+    END AS concepto,
+    vd.cantidad,
+    vd.precio_unitario,
+    (vd.cantidad * vd.precio_unitario) AS subtotal,
+    v.subtotal_exenta,
+    v.subtotal_iva5,
+    v.subtotal_iva10,
+    v.liquidacion_iva5,
+    v.liquidacion_iva10,
+    v.total_iva,
+    COALESCE(v.total_venta, 0) AS total_venta
+FROM public.ventas v
+INNER JOIN public.pacientes p ON v.id_paciente = p.id_paciente
+LEFT JOIN public.metodos_pago m ON v.id_metodo = m.id_metodo
+INNER JOIN public.ventas_detalle vd ON v.id_venta = vd.id_venta
+LEFT JOIN public.insumos i ON vd.id_insumo = i.id_insumo AND vd.tipo_item = 'INSUMO'
+LEFT JOIN public.citas c ON vd.id_insumo = c.id_cita AND vd.tipo_item = 'SERVICIO'
+LEFT JOIN public.servicios s_cita ON c.id_servicio = s_cita.id_servicio
+LEFT JOIN public.servicios s_directo ON vd.id_insumo = s_directo.id_servicio AND vd.tipo_item = 'SERVICIO'
+LEFT JOIN public.internaciones intn ON vd.id_insumo = intn.id_internacion AND vd.tipo_item = 'INTERNACION'
+LEFT JOIN public.habitaciones h ON intn.id_habitacion = h.id_habitacion
+WHERE v.id_venta = $P{ID_VENTA}
+ORDER BY vd.tipo_item, concepto]]>
+	</queryString>
+	<field name="numero_factura" class="java.lang.String"/>
+	<field name="fecha_venta" class="java.sql.Date"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="ruc_ci_paciente" class="java.lang.String"/>
+	<field name="titular_factura" class="java.lang.String"/>
+	<field name="paciente" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="metodo_pago" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="tipo_iva" class="java.lang.Integer"/>
+	<field name="concepto" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="precio_unitario" class="java.math.BigDecimal"/>
+	<field name="subtotal" class="java.math.BigDecimal"/>
+	<field name="subtotal_exenta" class="java.math.BigDecimal"/>
+	<field name="subtotal_iva5" class="java.math.BigDecimal"/>
+	<field name="subtotal_iva10" class="java.math.BigDecimal"/>
+	<field name="liquidacion_iva5" class="java.math.BigDecimal"/>
+	<field name="liquidacion_iva10" class="java.math.BigDecimal"/>
+	<field name="total_iva" class="java.math.BigDecimal"/>
+	<field name="total_venta" class="java.math.BigDecimal"/>
+	<title>
+		<band height="240" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="275" height="110" uuid="d18c14b9-a64a-43ec-9995-84ec0dc32e3c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="10" width="275" height="20" uuid="c02c264e-721d-4973-a0b8-5239aeb5849c"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLINISYC]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="30" width="275" height="15" uuid="61000000-0000-0000-0000-000000000001"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["RUC: " + $P{RUC_EMISOR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="45" width="275" height="15" uuid="4acbeda2-8223-4c43-86cb-7c0d2319b68b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Desarrollo de Software - Enseñanza superior]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="275" height="15" uuid="f048cca8-7e7d-4d5a-8291-4a0d4ad6ac74"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[clinisys@gmail.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="75" width="275" height="15" uuid="7e7f8d51-f82f-4ea4-ab12-15927423608a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[021 258 258]]></text>
+			</staticText>
+			<rectangle radius="8">
+				<reportElement x="285" y="0" width="270" height="110" uuid="319b3d83-f07c-45af-b1e0-69acf572483c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="285" y="10" width="270" height="20" uuid="f9048ac1-8eee-45b2-9405-961573034ece"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACTURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="30" width="270" height="15" uuid="9ebcd39d-f690-4656-966d-1a2beca92e7b"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Timbrado N° 12530974]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="45" width="270" height="15" uuid="ae7ec19a-735d-4b6c-b7ee-321c249d6fd6"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicio Vigencia: 2025-08-08]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="60" width="270" height="15" uuid="d1fa3fcc-b4c9-4613-97fd-ec071e1b897d"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha Fin Vigencia: 2028-08-18]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="285" y="80" width="270" height="20" uuid="fe183b5c-329d-4b01-b5b6-1b5cccf823a0"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["N° " + $F{numero_factura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="91" width="270" height="18" forecolor="#C00000" uuid="a1b2c3d4-e5f6-47a8-9b0c-1d2e3f4a5b6c">
+					<printWhenExpression><![CDATA[$F{estado} != null && $F{estado}.equalsIgnoreCase("ANULADO")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACTURA ANULADA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="118" width="555" height="80" uuid="5c1b4942-63f3-4f2a-971b-06fd0ed0e423"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="123" width="100" height="15" uuid="0ff22898-cdf4-4072-a714-5781025de022"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de emisión:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="110" y="123" width="180" height="15" uuid="7a6db91f-4b06-4e0f-961f-db6d85e3d73c"/>
+				<textFieldExpression><![CDATA[$F{fecha_venta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="141" width="100" height="15" uuid="9ef29a56-dfd1-44b3-b7bc-90aaeb013240"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre / R. Social:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="141" width="250" height="15" uuid="f21315ea-a40c-456c-8316-052dbd5c4c68"/>
+				<textFieldExpression><![CDATA[$F{titular_factura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="159" width="100" height="15" uuid="0c7d4275-fbde-4e87-b7a5-1db2cb4bbda9"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[R.U.C. / C.I.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="159" width="180" height="15" uuid="402e08e6-d925-4d96-8a99-d8749468e23d"/>
+				<textFieldExpression><![CDATA[$F{ruc_ci_paciente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="177" width="100" height="15" uuid="aad8d041-b919-4951-b1de-63384dd3809c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condición Venta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="177" width="180" height="15" uuid="bb69e0bc-19f1-47e0-b0fa-e9d915f30413"/>
+				<textFieldExpression><![CDATA[$F{metodo_pago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="210" width="55" height="30" backcolor="#EFEFEF" uuid="10000000-0000-0000-0000-000000000001"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="55" y="210" width="55" height="30" backcolor="#EFEFEF" uuid="10000000-0000-0000-0000-000000000002"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cant.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="210" width="195" height="30" backcolor="#EFEFEF" uuid="10000000-0000-0000-0000-000000000003"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción / Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="210" width="65" height="30" backcolor="#EFEFEF" uuid="10000000-0000-0000-0000-000000000004"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="210" width="85" height="30" backcolor="#EFEFEF" uuid="10000000-0000-0000-0000-000000000005"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P. Unit.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="210" width="100" height="30" backcolor="#EFEFEF" uuid="10000000-0000-0000-0000-000000000006"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="55" height="20" uuid="20000000-0000-0000-0000-000000000001"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="0" width="55" height="20" uuid="20000000-0000-0000-0000-000000000002"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="195" height="20" uuid="20000000-0000-0000-0000-000000000003"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="0" width="65" height="20" uuid="20000000-0000-0000-0000-000000000004"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo_iva} == 0 ? "Exenta" : ($F{tipo_iva} + "%")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="370" y="0" width="85" height="20" uuid="20000000-0000-0000-0000-000000000005"/>
+				<box rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio_unitario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="455" y="0" width="100" height="20" uuid="20000000-0000-0000-0000-000000000006"/>
+				<box rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="210" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="370" height="32" uuid="f12b1be7-9b54-47cb-ba0b-57f2611bcc65"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="8" y="0" width="95" height="32" uuid="51000000-0000-0000-0000-000000000001"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL GENERAL:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="105" y="0" width="260" height="32" uuid="51000000-0000-0000-0000-000000000002"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{MONTO_LETRAS}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="370" y="0" width="185" height="32" uuid="d1b05d6f-4320-415f-a653-2af89493eb4d"/>
+			</rectangle>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="375" y="0" width="175" height="32" uuid="9d29837c-3333-4444-8888-111122223333"/>
+				<box rightPadding="5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_venta}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="40" width="555" height="115" uuid="f12b1be7-9b54-47cb-ba0b-57f2611bcc64"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="48" width="260" height="18" uuid="41000000-0000-0000-0000-000000000001"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LIQUIDACIÓN DEL IVA (IVA INCLUIDO)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="70" width="190" height="16" uuid="41000000-0000-0000-0000-000000000002"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Exentas]]></text>
+			</staticText>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="150" y="70" width="120" height="16" uuid="41000000-0000-0000-0000-000000000003"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal_exenta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="88" width="190" height="16" uuid="41000000-0000-0000-0000-000000000004"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Gravadas al 5% (base)]]></text>
+			</staticText>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="150" y="88" width="120" height="16" uuid="41000000-0000-0000-0000-000000000005"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal_iva5}.subtract($F{liquidacion_iva5})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="106" width="190" height="16" uuid="41000000-0000-0000-0000-000000000006"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[IVA 5%]]></text>
+			</staticText>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="150" y="106" width="120" height="16" uuid="41000000-0000-0000-0000-000000000007"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{liquidacion_iva5}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="70" width="170" height="16" uuid="41000000-0000-0000-0000-000000000008"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Gravadas al 10% (base)]]></text>
+			</staticText>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="435" y="70" width="110" height="16" uuid="41000000-0000-0000-0000-000000000009"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal_iva10}.subtract($F{liquidacion_iva10})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="88" width="170" height="16" uuid="41000000-0000-0000-0000-000000000010"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[IVA 10%]]></text>
+			</staticText>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="435" y="88" width="110" height="16" uuid="41000000-0000-0000-0000-000000000011"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{liquidacion_iva10}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="106" width="170" height="16" uuid="41000000-0000-0000-0000-000000000012"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total IVA]]></text>
+			</staticText>
+			<textField pattern="#,##0 Gs.">
+				<reportElement x="435" y="106" width="110" height="16" uuid="41000000-0000-0000-0000-000000000013"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_iva}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="185" width="555" height="20" uuid="d27aaabd-f9f6-469c-8e39-b4d6db008b51"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="185" width="555" height="20" uuid="25cbd559-6650-4493-b07f-ad29c0f9fd00"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORIGINAL: CLIENTE - DUPLICADO: CONTABILIDAD - TRIPLICADO: ARCHIVO TRIBUTARIO]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

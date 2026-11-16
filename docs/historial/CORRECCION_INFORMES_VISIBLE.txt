@@ -1,0 +1,6 @@
+Corrección de Roles y Permisos: módulo Informes visible
+
+El módulo Informes se estaba excluyendo junto con los módulos antiguos,
+por eso no aparecía en la tabla. Ahora se muestra como módulo seleccionable
+con Ver, Crear, Editar y Eliminar. Se conserva el mismo registro Informes
+para compatibilidad con roles anteriores.

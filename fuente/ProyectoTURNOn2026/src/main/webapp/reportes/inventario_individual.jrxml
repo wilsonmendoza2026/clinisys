@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="insumo_individual" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7f3a1b2c-4d5e-4f6a-8b9c-0d1e2f3a4b5c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="estiloEstado" forecolor="#333333" fontName="Arial" fontSize="14" isBold="true">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{estado}.equals("SIN STOCK")]]></conditionExpression>
+			<style forecolor="#C0392B"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{estado}.equals("STOCK BAJO")]]></conditionExpression>
+			<style forecolor="#B7950B"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{estado}.equals("STOCK DISPONIBLE")]]></conditionExpression>
+			<style forecolor="#1E8449"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="id_insumo" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT i.id_insumo,
+       i.nombre_insumo,
+       COALESCE(m.descripcion_marca, 'SIN MARCA') AS marca,
+       COALESCE(c.descripcion_categoria, 'SIN CATEGORÍA') AS categoria,
+       COALESCE(s.cantidad, 0) AS stock_actual,
+       i.stock_minimo,
+       CASE WHEN COALESCE(s.cantidad, 0) = 0 THEN 'SIN STOCK'
+            WHEN COALESCE(s.cantidad, 0) <= 5 THEN 'STOCK BAJO'
+            ELSE 'STOCK DISPONIBLE' END AS estado
+FROM insumos i
+LEFT JOIN marcas m ON i.id_marca = m.id_marca
+LEFT JOIN categorias c ON i.id_categoria = c.id_categoria
+LEFT JOIN stock s ON i.id_insumo = s.id_insumo
+WHERE i.id_insumo = $P{id_insumo}]]>
+	</queryString>
+	<field name="id_insumo" class="java.lang.Integer"/>
+	<field name="nombre_insumo" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="categoria" class="java.lang.String"/>
+	<field name="stock_actual" class="java.lang.Integer"/>
+	<field name="stock_minimo" class="java.lang.Integer"/>
+	<field name="estado" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="802" height="70" backcolor="#008855" uuid="1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5cf2"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="8" width="802" height="32" forecolor="#FFFFFF" uuid="8ca63c4a-54de-4752-bdb2-8d85ef528c44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ClinicSys]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="802" height="20" forecolor="#E6F2ED" uuid="889a6884-366b-4dfd-aead-f15d3964ed1e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FICHA INDIVIDUAL DE INSUMO  |  San Lorenzo, Paraguay – Tel. 0986-896-425]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="260" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="802" height="252" backcolor="#FFFFFF" uuid="9a1b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c5d"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineColor="#CCCCCC"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="36" backcolor="#F7F7F7" uuid="a1b2c3d4-5e6f-4a7b-8c9d-1e2f3a4b5c60"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="6" width="180" height="24" forecolor="#2E4053" uuid="b1c2d3e4-5f6a-4b7c-8d9e-2f3a4b5c6d71"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="6" width="552" height="24" uuid="c1d2e3f4-5a6b-4c7d-8e9f-3a4b5c6d7e82"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_insumo}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="0" y="36" width="802" height="36" backcolor="#FFFFFF" uuid="a1b2c3d4-5e6f-4a7b-8c9d-1e2f3a4b5c61"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="42" width="180" height="24" forecolor="#2E4053" uuid="b1c2d3e4-5f6a-4b7c-8d9e-2f3a4b5c6d72"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="220" y="42" width="552" height="24" uuid="c1d2e3f4-5a6b-4c7d-8e9f-3a4b5c6d7e83"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_insumo}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="0" y="72" width="802" height="36" backcolor="#F7F7F7" uuid="a1b2c3d4-5e6f-4a7b-8c9d-1e2f3a4b5c62"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="78" width="180" height="24" forecolor="#2E4053" uuid="b1c2d3e4-5f6a-4b7c-8d9e-2f3a4b5c6d73"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Marca:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="78" width="552" height="24" uuid="c1d2e3f4-5a6b-4c7d-8e9f-3a4b5c6d7e84"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="0" y="108" width="802" height="36" backcolor="#FFFFFF" uuid="a1b2c3d4-5e6f-4a7b-8c9d-1e2f3a4b5c63"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="114" width="180" height="24" forecolor="#2E4053" uuid="b1c2d3e4-5f6a-4b7c-8d9e-2f3a4b5c6d74"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoría:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="114" width="552" height="24" uuid="c1d2e3f4-5a6b-4c7d-8e9f-3a4b5c6d7e85"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="0" y="144" width="802" height="36" backcolor="#F7F7F7" uuid="a1b2c3d4-5e6f-4a7b-8c9d-1e2f3a4b5c64"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="150" width="180" height="24" forecolor="#2E4053" uuid="b1c2d3e4-5f6a-4b7c-8d9e-2f3a4b5c6d75"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock Actual:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="150" width="200" height="24" uuid="c1d2e3f4-5a6b-4c7d-8e9f-3a4b5c6d7e86"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock_actual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="450" y="150" width="180" height="24" forecolor="#2E4053" uuid="b1c2d3e4-5f6a-4b7c-8d9e-2f3a4b5c6d76"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock Mínimo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="640" y="150" width="132" height="24" uuid="c1d2e3f4-5a6b-4c7d-8e9f-3a4b5c6d7e87"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stock_minimo}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="0" y="180" width="802" height="42" backcolor="#FFFFFF" uuid="a1b2c3d4-5e6f-4a7b-8c9d-1e2f3a4b5c65"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="30" y="188" width="180" height="26" forecolor="#2E4053" uuid="b1c2d3e4-5f6a-4b7c-8d9e-2f3a4b5c6d77"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="estiloEstado" x="220" y="188" width="400" height="26" uuid="c1d2e3f4-5a6b-4c7d-8e9f-3a4b5c6d7e88"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="802" height="1" forecolor="#008855" uuid="e04a8128-7836-460b-add8-a64151bacd6e"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="8" width="300" height="20" forecolor="#666666" uuid="6c55772e-0c5c-4db8-9544-ec45f7e022ad"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ficha de insumo N° " + $F{id_insumo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="602" y="8" width="200" height="20" forecolor="#666666" uuid="c2a01817-ba00-4b2b-bde0-0041a6b0af21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

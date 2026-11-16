@@ -1,0 +1,508 @@
+/* Tema oscuro opcional para Clinisys. Se activa con html[data-tema="oscuro"]. */
+html[data-tema="oscuro"] {
+    color-scheme: dark;
+    --tema-fondo: #111827;
+    --tema-superficie: #1d2735;
+    --tema-superficie-secundaria: #242f3f;
+    --tema-borde: #39475a;
+    --tema-texto: #e8edf4;
+    --tema-texto-suave: #b8c4d2;
+    --tema-campo: #151e2c;
+    --tema-hover: #2b394d;
+}
+
+html[data-tema="oscuro"] body {
+    background-color: var(--tema-fondo) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .content-wrapper,
+html[data-tema="oscuro"] .content,
+html[data-tema="oscuro"] .content-header,
+html[data-tema="oscuro"] .main-footer {
+    background-color: var(--tema-fondo) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .main-header.navbar.navbar-white.navbar-light {
+    background-color: var(--tema-superficie) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .main-header .navbar-nav .nav-link,
+html[data-tema="oscuro"] .main-header .navbar-nav .nav-link:hover {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .card,
+html[data-tema="oscuro"] .card-body,
+html[data-tema="oscuro"] .card-footer {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .card-header:not(.bg-primary):not(.bg-info):not(.bg-success):not(.bg-warning):not(.bg-danger):not(.bg-secondary):not(.bg-dark):not(.bg-indigo):not(.bg-purple) {
+    background-color: var(--tema-superficie-secundaria) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .bg-white:not(.keep-white):not(.brand-link),
+html[data-tema="oscuro"] .bg-light,
+html[data-tema="oscuro"] .table-light,
+html[data-tema="oscuro"] .thead-light th {
+    background-color: var(--tema-superficie-secundaria) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .table,
+html[data-tema="oscuro"] .table th,
+html[data-tema="oscuro"] .table td {
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.035) !important;
+}
+
+html[data-tema="oscuro"] .table-hover tbody tr:hover {
+    background-color: var(--tema-hover) !important;
+    color: var(--tema-texto) !important;
+}
+
+/* Campos con clases Bootstrap y controles sencillos generados por algunas pantallas. */
+html[data-tema="oscuro"] .form-control,
+html[data-tema="oscuro"] .custom-select,
+html[data-tema="oscuro"] .input-group-text,
+html[data-tema="oscuro"] .custom-file-label,
+html[data-tema="oscuro"] .select2-container--default .select2-selection--single,
+html[data-tema="oscuro"] .select2-container--default .select2-selection--multiple,
+html[data-tema="oscuro"] input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="color"]),
+html[data-tema="oscuro"] textarea,
+html[data-tema="oscuro"] select:not(.select2-hidden-accessible) {
+    background-color: var(--tema-campo) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+    -webkit-text-fill-color: var(--tema-texto) !important;
+    opacity: 1;
+}
+
+html[data-tema="oscuro"] input::placeholder,
+html[data-tema="oscuro"] textarea::placeholder,
+html[data-tema="oscuro"] .form-control::placeholder {
+    color: var(--tema-texto-suave) !important;
+    -webkit-text-fill-color: var(--tema-texto-suave) !important;
+    opacity: 1 !important;
+}
+
+html[data-tema="oscuro"] input:disabled,
+html[data-tema="oscuro"] input[readonly],
+html[data-tema="oscuro"] textarea:disabled,
+html[data-tema="oscuro"] textarea[readonly],
+html[data-tema="oscuro"] select:disabled {
+    background-color: #202b3b !important;
+    color: #d5deea !important;
+    -webkit-text-fill-color: #d5deea !important;
+    opacity: 1 !important;
+}
+
+html[data-tema="oscuro"] .form-control:focus,
+html[data-tema="oscuro"] .custom-select:focus,
+html[data-tema="oscuro"] input:focus,
+html[data-tema="oscuro"] textarea:focus,
+html[data-tema="oscuro"] select:focus {
+    background-color: var(--tema-campo) !important;
+    color: var(--tema-texto) !important;
+    -webkit-text-fill-color: var(--tema-texto) !important;
+    border-color: #6ca9e8 !important;
+    box-shadow: 0 0 0 0.2rem rgba(108, 169, 232, 0.2);
+}
+
+html[data-tema="oscuro"] option {
+    background-color: var(--tema-campo) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .dropdown-menu,
+html[data-tema="oscuro"] .modal-content,
+html[data-tema="oscuro"] .popover {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+/* Algunos modales fijan el fondo claro mediante style="..."; se reemplaza aquí. */
+html[data-tema="oscuro"] .modal-body,
+html[data-tema="oscuro"] .modal-footer.bg-light,
+html[data-tema="oscuro"] .modal-footer.bg-white {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .dropdown-item,
+html[data-tema="oscuro"] .modal-title,
+html[data-tema="oscuro"] .modal-body,
+html[data-tema="oscuro"] .close {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .dropdown-item:hover,
+html[data-tema="oscuro"] .dropdown-item:focus {
+    background-color: var(--tema-hover) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .modal-header,
+html[data-tema="oscuro"] .modal-footer,
+html[data-tema="oscuro"] .popover-header {
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .page-link,
+html[data-tema="oscuro"] .dataTables_wrapper .dataTables_length select,
+html[data-tema="oscuro"] .dataTables_wrapper .dataTables_filter input {
+    background-color: var(--tema-campo) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] .page-item.disabled .page-link {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto-suave) !important;
+}
+
+html[data-tema="oscuro"] .text-dark:not(.badge):not(.btn):not(.nav-link),
+html[data-tema="oscuro"] .text-secondary:not(.badge):not(.btn),
+html[data-tema="oscuro"] label,
+html[data-tema="oscuro"] legend,
+html[data-tema="oscuro"] .dataTables_info,
+html[data-tema="oscuro"] .dataTables_wrapper .dataTables_length,
+html[data-tema="oscuro"] .dataTables_wrapper .dataTables_filter,
+html[data-tema="oscuro"] .dataTables_wrapper .dataTables_paginate {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .text-muted,
+html[data-tema="oscuro"] .text-gray-200,
+html[data-tema="oscuro"] .text-gray-300 {
+    color: var(--tema-texto-suave) !important;
+}
+
+html[data-tema="oscuro"] .badge-light {
+    background-color: #354357 !important;
+    color: #edf2f8 !important;
+    border-color: #526176 !important;
+}
+
+html[data-tema="oscuro"] hr {
+    border-color: var(--tema-borde) !important;
+}
+
+/* Agenda de citas: calendario y disponibilidad de horarios. */
+html[data-tema="oscuro"] #fc-calendar-container {
+    background-color: var(--tema-superficie) !important;
+    border-color: var(--tema-borde) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .fc {
+    --fc-border-color: var(--tema-borde);
+    --fc-page-bg-color: var(--tema-superficie);
+    --fc-neutral-bg-color: var(--tema-superficie-secundaria);
+    --fc-list-event-hover-bg-color: var(--tema-hover);
+    --fc-today-bg-color: rgba(13, 110, 253, 0.16);
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .fc .fc-toolbar-title,
+html[data-tema="oscuro"] .fc .fc-col-header-cell-cushion,
+html[data-tema="oscuro"] .fc .fc-daygrid-day-number,
+html[data-tema="oscuro"] .fc .fc-timegrid-slot-label-cushion,
+html[data-tema="oscuro"] .fc .fc-timegrid-axis-cushion,
+html[data-tema="oscuro"] .fc .fc-list-day-text,
+html[data-tema="oscuro"] .fc .fc-list-day-side-text {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .fc-theme-standard td,
+html[data-tema="oscuro"] .fc-theme-standard th,
+html[data-tema="oscuro"] .fc-theme-standard .fc-scrollgrid,
+html[data-tema="oscuro"] .fc-theme-standard .fc-list {
+    border-color: var(--tema-borde) !important;
+}
+
+/* Internaciones: tarjetas y nombres del personal disponible. */
+html[data-tema="oscuro"] #contenedor_agenda {
+    background-color: var(--tema-fondo) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero:not(.tarjeta-seleccionada) {
+    background-color: var(--tema-superficie-secundaria) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero.tarjeta-seleccionada {
+    background-color: #183b2a !important;
+    color: #f0fff5 !important;
+    border-color: #35a866 !important;
+}
+
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero h6,
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero .text-dark {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-seleccionada h6,
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-seleccionada .text-dark {
+    color: #f0fff5 !important;
+}
+
+html[data-tema="oscuro"] #contenedor_agenda .turno-badge {
+    background-color: #354357 !important;
+    color: #edf2f8 !important;
+    border-color: #526176 !important;
+}
+
+/* Informes: la vista master-detail usa estilos propios con fondos blancos en línea. */
+html[data-tema="oscuro"] .md-wrap,
+html[data-tema="oscuro"] .md-box,
+html[data-tema="oscuro"] .md-table,
+html[data-tema="oscuro"] .md-kpi {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28) !important;
+}
+
+html[data-tema="oscuro"] .md-kpi b,
+html[data-tema="oscuro"] .md-kpi strong,
+html[data-tema="oscuro"] .md-box label,
+html[data-tema="oscuro"] .md-table td,
+html[data-tema="oscuro"] .md-empty,
+html[data-tema="oscuro"] .md-wrap h1,
+html[data-tema="oscuro"] .md-wrap h2,
+html[data-tema="oscuro"] .md-wrap h3,
+html[data-tema="oscuro"] .md-wrap p {
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .md-table th {
+    background-color: #253b56 !important;
+    color: #fff !important;
+}
+
+html[data-tema="oscuro"] .md-table .table,
+html[data-tema="oscuro"] .md-table .table td {
+    background-color: transparent;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .md-empty {
+    color: var(--tema-texto-suave) !important;
+}
+
+html[data-tema="oscuro"] .informe-card .card-title,
+html[data-tema="oscuro"] .informe-card label,
+html[data-tema="oscuro"] .informe-card .descripcion {
+    color: var(--tema-texto) !important;
+}
+
+/* Resumen monetario del modal Ver Ítems de una orden. */
+html[data-tema="oscuro"] #modalDetalleOrden .table tr.table-light,
+html[data-tema="oscuro"] #modalDetalleOrden .table tr.table-light td,
+html[data-tema="oscuro"] #modalDetalleOrden .table tfoot,
+html[data-tema="oscuro"] #modalDetalleOrden .table tfoot th,
+html[data-tema="oscuro"] #modalDetalleOrden .table tfoot td {
+    background-color: var(--tema-superficie-secundaria) !important;
+    color: #f5f8fc !important;
+}
+
+html[data-tema="oscuro"] .select2-container--default .select2-results__option {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--tema-hover) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .swal2-popup {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+}
+
+html[data-tema="oscuro"] .swal2-title,
+html[data-tema="oscuro"] .swal2-html-container {
+    color: var(--tema-texto) !important;
+}
+
+#clinisysThemeToggle {
+    min-width: 42px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html[data-tema="oscuro"] body,
+    html[data-tema="oscuro"] .card,
+    html[data-tema="oscuro"] .main-header {
+        transition: background-color 0.18s ease, color 0.18s ease;
+    }
+}
+
+@media print {
+    html[data-tema="oscuro"],
+    html[data-tema="oscuro"] body,
+    html[data-tema="oscuro"] .content-wrapper,
+    html[data-tema="oscuro"] .content,
+    html[data-tema="oscuro"] .card,
+    html[data-tema="oscuro"] .card-body,
+    html[data-tema="oscuro"] .md-wrap,
+    html[data-tema="oscuro"] .md-box,
+    html[data-tema="oscuro"] .md-kpi,
+    html[data-tema="oscuro"] .md-table {
+        background: #fff !important;
+        color: #000 !important;
+        box-shadow: none !important;
+    }
+
+    #clinisysThemeToggle {
+        display: none !important;
+    }
+}
+
+
+/* Internaciones: nombres, disponibilidad y turnos con jerarquía tipográfica clara. */
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero {
+    padding: 1rem !important;
+    margin-bottom: .75rem !important;
+    border-radius: 10px !important;
+}
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero h6 {
+    color: #ffffff !important;
+    font-size: 1.08rem !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    padding-right: 5.5rem;
+    margin-bottom: .6rem !important;
+}
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero .turno-badge {
+    display: inline-block;
+    background-color: #34445a !important;
+    color: #f4f7fb !important;
+    border: 1px solid #64758b !important;
+    font-size: .9rem !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    padding: .38rem .65rem !important;
+    margin: .15rem .3rem .25rem 0 !important;
+    border-radius: 6px !important;
+}
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero .badge-light {
+    background-color: #263c54 !important;
+    color: #ffffff !important;
+    border: 1px solid #7790ad !important;
+    font-size: .8rem !important;
+    font-weight: 700 !important;
+    padding: .32rem .6rem !important;
+    letter-spacing: .02em;
+}
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-enfermero.tarjeta-seleccionada {
+    background-color: #183b2a !important;
+    border-color: #42bd78 !important;
+}
+html[data-tema="oscuro"] #contenedor_agenda .tarjeta-seleccionada .turno-badge {
+    background-color: #205039 !important;
+    border-color: #48a875 !important;
+    color: #f3fff7 !important;
+}
+
+/* Inventario: los estilos propios de la página usan fondos claros en línea. */
+html[data-tema="oscuro"] .inv-wrap,
+html[data-tema="oscuro"] .inv-filters,
+html[data-tema="oscuro"] .inv-table,
+html[data-tema="oscuro"] .inv-stat {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.28) !important;
+}
+html[data-tema="oscuro"] .inv-filters h4,
+html[data-tema="oscuro"] .inv-filters label,
+html[data-tema="oscuro"] .inv-stat b,
+html[data-tema="oscuro"] .inv-stat strong,
+html[data-tema="oscuro"] .inv-empty,
+html[data-tema="oscuro"] .inv-wrap h1,
+html[data-tema="oscuro"] .inv-wrap p {
+    color: var(--tema-texto) !important;
+}
+html[data-tema="oscuro"] .inv-stat b,
+html[data-tema="oscuro"] .inv-empty {
+    color: var(--tema-texto-suave) !important;
+}
+html[data-tema="oscuro"] .inv-wrap .table,
+html[data-tema="oscuro"] .inv-wrap .table th,
+html[data-tema="oscuro"] .inv-wrap .table td {
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+html[data-tema="oscuro"] .inv-wrap .table thead th {
+    background-color: #253b56 !important;
+    color: #ffffff !important;
+}
+html[data-tema="oscuro"] .inv-wrap .table tbody tr:nth-of-type(odd) {
+    background-color: rgba(255,255,255,.035) !important;
+}
+
+/* Cierre de caja y auditoría histórica. Los colores de botones semánticos se conservan. */
+html[data-tema="oscuro"] #modalHistorial .modal-content,
+html[data-tema="oscuro"] #modalHistorial .modal-body,
+html[data-tema="oscuro"] #modalHistorial .modal-footer {
+    background-color: var(--tema-superficie) !important;
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+html[data-tema="oscuro"] #modalHistorial .modal-body h4,
+html[data-tema="oscuro"] #modalHistorial .modal-body h6,
+html[data-tema="oscuro"] #modalHistorial .modal-body p,
+html[data-tema="oscuro"] #modalHistorial .modal-body strong {
+    color: var(--tema-texto) !important;
+}
+html[data-tema="oscuro"] #modalHistorial .table,
+html[data-tema="oscuro"] #modalHistorial .table th,
+html[data-tema="oscuro"] #modalHistorial .table td,
+html[data-tema="oscuro"] #modalHistorial .table tfoot td {
+    color: var(--tema-texto) !important;
+    border-color: var(--tema-borde) !important;
+}
+html[data-tema="oscuro"] #modalHistorial .table thead,
+html[data-tema="oscuro"] #modalHistorial .table thead th,
+html[data-tema="oscuro"] #modalHistorial .table .thead-dark th {
+    background-color: #253b56 !important;
+    color: #ffffff !important;
+}
+html[data-tema="oscuro"] #modalHistorial .table tfoot tr,
+html[data-tema="oscuro"] #modalHistorial .table tfoot td,
+html[data-tema="oscuro"] #modalHistorial .table .table-info,
+html[data-tema="oscuro"] #modalHistorial .table .table-info td {
+    background-color: #263d54 !important;
+    color: #ffffff !important;
+}
+html[data-tema="oscuro"] .content-wrapper .card-header.bg-light {
+    background-color: var(--tema-superficie-secundaria) !important;
+    color: var(--tema-texto) !important;
+}
+html[data-tema="oscuro"] .content-wrapper .card-header .text-secondary,
+html[data-tema="oscuro"] .content-wrapper .card-body .text-dark,
+html[data-tema="oscuro"] .content-wrapper .card-body .text-muted {
+    color: var(--tema-texto) !important;
+}
+html[data-tema="oscuro"] .content-wrapper .alert {
+    color: #f7f9fc !important;
+}

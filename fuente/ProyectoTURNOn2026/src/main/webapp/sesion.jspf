@@ -1,0 +1,8 @@
+<%
+    HttpSession sesionSeguridad = request.getSession(false);
+    if (sesionSeguridad == null || sesionSeguridad.getAttribute("logueado") == null || "0".equals(sesionSeguridad.getAttribute("logueado"))) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        out.print("Sesión no válida o expirada.");
+        return;
+    }
+%>

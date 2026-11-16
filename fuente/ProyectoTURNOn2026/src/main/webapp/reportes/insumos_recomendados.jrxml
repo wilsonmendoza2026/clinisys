@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="insumos_recomendados" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="24" bottomMargin="24" uuid="fa71234b-b846-4a6c-a38a-9cfb2ddeb40f">
+	<parameter name="id_diagnostico" class="java.lang.Integer"/>
+	<parameter name="es_admin" class="java.lang.Boolean"/>
+	<parameter name="id_medico" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT d.id_diagnostico,
+       d.fecha_diagnostico,
+       COALESCE(p.apellido || ', ' || p.nombre, 'Sin paciente') AS paciente,
+       COALESCE(m.apellido || ', ' || m.nombre, 'Sin médico') AS medico,
+       COALESCE(ir.nombre_insumo, i.nombre_insumo, 'No se recomendaron insumos') AS nombre_insumo,
+       COALESCE(ir.cantidad, 1) AS cantidad,
+       COALESCE(ir.indicaciones, '') AS indicaciones
+FROM public.diagnosticos d
+LEFT JOIN public.pacientes p ON p.id_paciente = d.id_paciente
+LEFT JOIN public.medicos m ON m.id_medico = d.id_medico
+LEFT JOIN public.diagnosticos_insumos_recomendados ir ON ir.id_diagnostico = d.id_diagnostico
+LEFT JOIN public.insumos i ON i.id_insumo = ir.id_insumo
+WHERE d.id_diagnostico = $P{id_diagnostico}
+  AND ($P{es_admin} = TRUE OR d.id_medico = $P{id_medico})
+ORDER BY ir.id_recomendacion]]>
+	</queryString>
+	<field name="id_diagnostico" class="java.lang.Integer"/>
+	<field name="fecha_diagnostico" class="java.sql.Date"/>
+	<field name="paciente" class="java.lang.String"/>
+	<field name="medico" class="java.lang.String"/>
+	<field name="nombre_insumo" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="indicaciones" class="java.lang.String"/>
+	<title>
+		<band height="64">
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="58" backcolor="#087E8B" uuid="75661ae8-c811-456d-bc80-3817f5757870"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="8" width="555" height="25" forecolor="#FFFFFF" uuid="ee433c8c-2c0a-4fae-85c4-8fcabeb91cea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ClinicSys]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="34" width="555" height="18" forecolor="#EAF7F8" uuid="ece38885-61f3-444a-8d94-fd33fd137cad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[FICHA DE INSUMOS RECOMENDADOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="102">
+			<staticText>
+				<reportElement x="0" y="4" width="95" height="18" uuid="0234408f-2947-4a08-a8dd-426d040d6017"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Atención N.º:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="95" y="4" width="170" height="18" uuid="8971532b-a5b7-4075-a5b1-71cae1bf92f0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_diagnostico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="350" y="4" width="45" height="18" uuid="92db3ab9-4bf6-484e-b312-8dc4452deddf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="395" y="4" width="160" height="18" uuid="655b6b30-9ec0-4246-aa61-60e4fd12774f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_diagnostico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="26" width="80" height="18" uuid="b40756b7-dc99-440d-966e-fd12924875bb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paciente:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="80" y="26" width="475" height="18" uuid="3c8847db-a0bf-4eb3-908e-b8f9195a652b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paciente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="48" width="80" height="18" uuid="45bd4855-b3d1-44a3-a93e-38c2db4c00de"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Médico:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="80" y="48" width="475" height="18" uuid="6d3980c3-8767-4961-a601-281d0288cb55"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{medico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="76" width="555" height="20" backcolor="#EAF3F4" uuid="3e5fcda9-303f-4c75-8ed5-09ddf76652a9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSUMOS RECOMENDADOS (NO CONSTITUYE UNA VENTA)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="26" forecolor="#D5DEE0" backcolor="#FFFFFF" uuid="a4575a31-b596-4493-85cf-243d53640c79"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="12" y="3" width="530" height="20" uuid="b573041c-1b54-46e1-9d87-73e48e453bf1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["•  " + $F{nombre_insumo} + "  (Cant: " + $F{cantidad} + ")" + ($F{indicaciones} != null && !$F{indicaciones}.trim().isEmpty() ? " — " + $F{indicaciones} : "")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" forecolor="#087E8B" uuid="c3dfb536-0f77-41f9-a2bc-01b53aa001a0"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="7" width="250" height="18" forecolor="#666666" uuid="e6a14740-f480-422f-a9fc-4ff9ebd7d723"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Emitido: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="7" width="100" height="18" forecolor="#666666" uuid="b70a48ae-e5fc-4f03-9e8b-8b300655320d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

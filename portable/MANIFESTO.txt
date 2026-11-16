@@ -1,0 +1,22 @@
+ClinicSys Offline Portable - Windows x64
+
+Incluye:
+- WAR actual compilado de ClinicSys.
+- Eclipse Temurin JDK 17.0.20.1.
+- Apache Tomcat 10.1.60.
+- PostgreSQL 17.11 server y utilidades.
+- Respaldo inicial sistema_nutricion en formato PostgreSQL custom.
+- Scripts preparar, iniciar, detener y respaldar.
+
+Funcionamiento:
+- Solo localhost/127.0.0.1.
+- Tomcat: puerto 8084.
+- PostgreSQL: puerto 5432.
+- Base: sistema_nutricion.
+- Usuario de aplicación: postgres.
+- La clave está en config/db_password.txt.
+
+Validación del constructor:
+- WAR compilado con Maven sin pruebas.
+- Archivos de ejecución descargados desde fuentes oficiales.
+- No se distribuye pgAdmin ni StackBuilder porque no son requeridos para ejecutar ClinicSys.

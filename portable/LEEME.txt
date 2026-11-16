@@ -1,0 +1,18 @@
+CLINICSYS OFFLINE PORTABLE - WINDOWS X64
+
+1. Ejecute preparar_clinicsys.bat UNA SOLA VEZ.
+2. Espere a que termine la restauracion de la base.
+3. Ejecute iniciar_clinicsys.bat.
+4. ClinicSys se abrira en http://127.0.0.1:8084/ProyectoTURNOn2026/
+5. Para cerrar, ejecute detener_clinicsys.bat.
+6. Para respaldar, ejecute respaldo_base.bat.
+
+No se requiere Internet ni una instalacion previa de Java, Tomcat o PostgreSQL.
+El sistema usa una base PostgreSQL local en data\pgdata.
+La aplicacion usa la clave PostgreSQL "1" escrita en sus conexiones JDBC. No requiere configurar una variable de entorno de Windows. El archivo config\db_password.txt se usa por los scripts locales de PostgreSQL y debe coincidir con la clave real de la base.
+No borre data\pgdata: contiene la base de datos operativa.
+
+Versiones incluidas:
+- Eclipse Temurin JDK 17.0.20.1
+- Apache Tomcat 10.1.60
+- PostgreSQL 17.11

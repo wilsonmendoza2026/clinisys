@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteInternacionIndividual" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7f4d5baa-dd2f-4ad1-a336-c28ec6af5004">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.backgroundcolor" value="#FFFFFF"/>
+	<parameter name="id_internacion" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+    i.id_internacion, 
+    COALESCE(CONCAT(p.apellido, ', ', p.nombre), 'Sin Paciente') AS paciente, 
+    COALESCE(h.nro_habitacion || ' (' || h.tipo || ')', 'Sin Asignar') AS habitacion, 
+    COALESCE(STRING_AGG(CONCAT(e.nombre, ' ', e.apellido), ', '), 'Sin Enfermeros') AS enfermeros_asignados, 
+    TO_CHAR(i.fecha_ingreso, 'DD/MM/YYYY') AS ingreso_format, 
+    COALESCE(TO_CHAR(i.fecha_ingreso + (i.cant_dias || ' days')::interval, 'DD/MM/YYYY'), 'En Curso') AS salida_format, 
+    COALESCE(i.cant_dias, 1) AS dias 
+FROM internaciones i 
+LEFT JOIN pacientes p ON i.id_paciente = p.id_paciente 
+LEFT JOIN habitaciones h ON i.id_habitacion = h.id_habitacion 
+LEFT JOIN internacion_enfermeros ie ON i.id_internacion = ie.id_internacion 
+LEFT JOIN enfermeria e ON ie.id_enfermero = e.id_enfermero 
+WHERE i.id_internacion = $P{id_internacion}
+GROUP BY i.id_internacion, p.apellido, p.nombre, h.nro_habitacion, h.tipo, i.fecha_ingreso, i.cant_dias;]]>
+	</queryString>
+	<field name="id_internacion" class="java.lang.Integer"/>
+	<field name="paciente" class="java.lang.String"/>
+	<field name="habitacion" class="java.lang.String"/>
+	<field name="enfermeros_asignados" class="java.lang.String"/>
+	<field name="ingreso_format" class="java.lang.String"/>
+	<field name="salida_format" class="java.lang.String"/>
+	<field name="dias" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="555" height="70" backcolor="#008855" uuid="a32e185f-8422-494b-bf50-1011d88a444d"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="8" width="555" height="32" forecolor="#FFFFFF" uuid="e241bc38-9912-4c20-a611-38a39158bd1d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ClinicSys]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="555" height="20" forecolor="#E6F2ED" uuid="f2a1a89d-7201-44bb-8b22-8328198f102c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FICHA INDIVIDUAL DE INTERNACIÓN  |  San Lorenzo, Paraguay]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="270" splitType="Stretch">
+			<!-- Encabezado Ficha -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="30" forecolor="#FFFFFF" backcolor="#2E4053" uuid="e1181231-3955-465e-9c1a-6570c1b0e535"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#2E4053"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DE LA INTERNACIÓN]]></text>
+			</staticText>
+
+			<!-- ID Internación -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="30" width="160" height="30" backcolor="#F4F6F6" uuid="a662930f-f698-480f-97ad-5db81f75a053"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID Internación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="30" width="395" height="30" uuid="01fd18d7-1fa1-46c6-bda5-a24e27cdb576"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_internacion}]]></textFieldExpression>
+			</textField>
+
+			<!-- Paciente -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="60" width="160" height="30" backcolor="#F4F6F6" uuid="008f220c-e47f-4717-8cc4-4ff7b2f821cb"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paciente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="60" width="395" height="30" uuid="bddb206b-0eef-4c52-abed-6e3368634d0c"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paciente} != null ? $F{paciente} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Habitación -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="90" width="160" height="30" backcolor="#F4F6F6" uuid="d858d49d-aeee-4f03-ace4-c87dfc0eae33"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Habitación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="90" width="395" height="30" uuid="26920060-e5e9-439c-a1e7-4be67317d020"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{habitacion} != null ? $F{habitacion} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Enfermeros Asignados -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="120" width="160" height="30" backcolor="#F4F6F6" uuid="36f3fe70-13dc-4c3b-9598-d3d7cd9624f7"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Enfermeros Asignados:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="120" width="395" height="30" uuid="16f62c60-64a5-492a-9e4c-356666fe25f1"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enfermeros_asignados} != null ? $F{enfermeros_asignados} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Fecha Ingreso -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="150" width="160" height="30" backcolor="#F4F6F6" uuid="f63f0784-c080-451a-8aad-d585aad90139"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Ingreso:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="150" width="395" height="30" uuid="97a3cf22-a481-4f02-bd0b-0dc88977ae63"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingreso_format} != null ? $F{ingreso_format} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Fecha Salida (Estimada/Real) -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="180" width="160" height="30" backcolor="#F4F6F6" uuid="45f6a789-1234-4567-8901-abcdef123456"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Salida:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="180" width="395" height="30" uuid="7f21b421-68c9-4116-9a0c-21ea95edd435"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{salida_format} != null ? $F{salida_format} : "-"]]></textFieldExpression>
+			</textField>
+
+			<!-- Días de Internación -->
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="210" width="160" height="30" backcolor="#F4F6F6" uuid="11223344-5566-7788-9900-aabbccddeeff"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Días de Internación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="210" width="395" height="30" uuid="ffeeddcc-bbaa-0099-8877-665544332211"/>
+				<box leftPadding="10">
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dias}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="4" width="555" height="1" forecolor="#008855" uuid="e04a8128-7836-460b-add8-a64151bacd6c"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="8" width="150" height="20" forecolor="#666666" uuid="6c55772e-0c5c-4db8-9544-ec45f7e022ab"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="355" y="8" width="200" height="20" forecolor="#666666" uuid="c2a01817-ba00-4b2b-bde0-0041a6b0af1f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

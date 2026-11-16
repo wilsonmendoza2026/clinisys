@@ -1,0 +1,98 @@
+<%@page import="java.sql.*"%>
+<%!
+    /**
+     * Comprueba un permiso granular del rol actual.
+     * El nombre del permiso se valida contra una lista cerrada antes de formar
+     * la consulta para evitar que llegue SQL arbitrario desde la petición.
+     */
+    private boolean tienePermiso(Connection conn, Object idRol, String nombreModulo, String permiso) throws SQLException {
+        if (idRol == null || nombreModulo == null || permiso == null) return false;
+        String columnaPermiso;
+        switch (permiso) {
+            case "ver": columnaPermiso = "puede_ver"; break;
+            case "crear": columnaPermiso = "puede_crear"; break;
+            case "editar": columnaPermiso = "puede_editar"; break;
+            case "eliminar": columnaPermiso = "puede_eliminar"; break;
+            default: return false;
+        }
+        String moduloGranular = moduloGranularActual();
+        if (moduloGranular != null) {
+            String sqlGranular = "SELECT rm." + columnaPermiso + " FROM roles_modulos rm INNER JOIN modulos m ON m.id_modulo = rm.id_modulo WHERE rm.id_rol = ? AND m.nombre_modulo = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlGranular)) {
+                ps.setInt(1, Integer.parseInt(String.valueOf(idRol)));
+                ps.setString(2, moduloGranular);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return rs.getBoolean(1);
+                }
+            }
+        }
+        String sqlAntiguo = "SELECT 1 FROM roles_modulos rm INNER JOIN modulos m ON m.id_modulo = rm.id_modulo WHERE rm.id_rol = ? AND m.nombre_modulo = ? AND rm." + columnaPermiso + " = TRUE";
+        try (PreparedStatement ps = conn.prepareStatement(sqlAntiguo)) {
+            ps.setInt(1, Integer.parseInt(String.valueOf(idRol)));
+            ps.setString(2, nombreModulo);
+            try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
+        }
+    }
+
+    /** Comprueba si el rol tiene al menos un permiso sobre el módulo. */
+    private boolean tieneAccesoAlModulo(Connection conn, Object idRol, String nombreModulo) throws SQLException {
+        if (idRol == null || nombreModulo == null) return false;
+        String moduloGranular = moduloGranularActual();
+        if (moduloGranular != null) {
+            String sqlGranular = "SELECT (rm.puede_ver OR rm.puede_crear OR rm.puede_editar OR rm.puede_eliminar) FROM roles_modulos rm INNER JOIN modulos m ON m.id_modulo = rm.id_modulo WHERE rm.id_rol = ? AND m.nombre_modulo = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlGranular)) {
+                ps.setInt(1, Integer.parseInt(String.valueOf(idRol)));
+                ps.setString(2, moduloGranular);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return rs.getBoolean(1);
+                }
+            }
+        }
+        String sqlAntiguo = "SELECT 1 FROM roles_modulos rm INNER JOIN modulos m ON m.id_modulo = rm.id_modulo WHERE rm.id_rol = ? AND m.nombre_modulo = ? AND (rm.puede_ver OR rm.puede_crear OR rm.puede_editar OR rm.puede_eliminar)";
+        try (PreparedStatement ps = conn.prepareStatement(sqlAntiguo)) {
+            ps.setInt(1, Integer.parseInt(String.valueOf(idRol)));
+            ps.setString(2, nombreModulo);
+            try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
+        }
+    }
+
+    /** Nombre granular de la pantalla actual; el segundo valor de las consultas
+     * anteriores mantiene operativos los siete módulos ya existentes. */
+    private String moduloGranularActual() {
+        String pagina = "";
+        for (StackTraceElement elemento : Thread.currentThread().getStackTrace()) {
+            String clase = elemento.getClassName().toLowerCase();
+            if (clase.startsWith("org.apache.jsp.") && !clase.contains("permisos")) {
+                pagina = clase;
+                break;
+            }
+        }
+        if (pagina == null || pagina.isEmpty()) return null;
+        if (pagina.contains("pacientes_jsp") || pagina.contains("pacientescontrolador_jsp")) return "Registrar pacientes";
+        if (pagina.contains("especialidades_jsp") || pagina.contains("especialidadescontrolador_jsp")) return "Especialidades";
+        if (pagina.contains("servicios_jsp") || pagina.contains("servicioscontrolador_jsp")) return "Aranceles de consultas";
+        if (pagina.contains("medicos_jsp") || pagina.contains("medicoscontrolador_jsp")) return "Médicos";
+        if (pagina.contains("habitaciones_jsp") || pagina.contains("habitacionescontrolador_jsp")) return "Gestión de Habitaciones";
+        if (pagina.contains("enfermeria_jsp") || pagina.contains("enfermeriacontrolador_jsp")) return "Gestión de enfermería";
+        if (pagina.contains("asignar_horarios_jsp") || pagina.contains("asignarhorarioscontrolador_jsp")) return "Asignar Horarios Personal";
+        if (pagina.contains("marcas_jsp") || pagina.contains("marcascontrolador_jsp")) return "Marcas";
+        if (pagina.contains("categorias_jsp") || pagina.contains("categoriascontrolador_jsp")) return "Categorías";
+        if (pagina.contains("insumos_jsp") || pagina.contains("insumoscontrolador_jsp")) return "Insumos";
+        if (pagina.contains("proveedores_jsp") || pagina.contains("proveedorescontrolador_jsp")) return "Proveedores";
+        if (pagina.contains("usuarios_jsp") || pagina.contains("usuarioscontrolador_jsp")) return "Gestión de usuario";
+        if (pagina.contains("metodopago_jsp") || pagina.contains("metodopagocontrolador_jsp")) return "Método de pago";
+        if (pagina.contains("roles_jsp") || pagina.contains("rolescontrolador_jsp")) return "Roles y permisos";
+        if (pagina.contains("citas_jsp") || pagina.contains("citascontrolador_jsp")) return "Agendas de citas y turnos";
+        if (pagina.contains("diagnosticos_jsp") || pagina.contains("diagnosticoscontrolador_jsp")) return "Registros de diagnósticos";
+        if (pagina.contains("internaciones_jsp") || pagina.contains("internacionescontrolador_jsp")) return "Gestión de internación";
+        if (pagina.contains("ordendecompra_jsp") || pagina.contains("ordendecompracontrolador_jsp")) return "Orden de compra";
+        if (pagina.contains("recepciondecompras_jsp") || pagina.contains("recepcioncontrolador_jsp")) return "Recepción de insumos";
+        if (pagina.contains("compras_jsp") || pagina.contains("comprascontrolador_jsp")) return "Gestión de compra";
+        if (pagina.contains("ventas_jsp") || pagina.contains("ventascontrolador_jsp") || pagina.contains("facturacioncontrolador_jsp")) return "Gestión de venta / facturación";
+        if (pagina.contains("cobros") && pagina.contains("pendientes")) return "Gestión de cobros pendientes";
+        if (pagina.contains("inventario_jsp") || pagina.contains("inventarioscontrolador_jsp")) return "Control de stock e inventario";
+        if (pagina.contains("cierre_caja_jsp")) return "Cierre de Facturación";
+        if (pagina.contains("informes_jsp") || pagina.contains("reportescontrolador_jsp")) return "Informes";
+        return null;
+    }
+%>

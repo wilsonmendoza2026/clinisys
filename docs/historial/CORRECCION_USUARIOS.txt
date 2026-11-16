@@ -1,0 +1,7 @@
+Corrección de creación e inicio de sesión de usuarios
+
+- Se eliminan espacios accidentales del nombre de usuario.
+- El alta usa bcrypt con costo explícito y devuelve el ID creado.
+- Después del INSERT se valida inmediatamente la contraseña con la misma consulta usada por el login.
+- El sistema solo informa éxito si la contraseña recién creada puede autenticarse.
+- El login normaliza el nombre de usuario con TRIM.

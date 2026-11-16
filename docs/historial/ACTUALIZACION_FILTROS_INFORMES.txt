@@ -1,0 +1,15 @@
+Actualización de filtros de informes ClinicSys
+
+Cambios incluidos:
+- Citas/Turnos: Pendiente, Atendido y No se presentó.
+- Diagnósticos: selector de médicos reales; se conserva el filtro de especialidad.
+- Internaciones: Disponible, Ocupado y Mantenimiento, filtrando por estado de habitación.
+- Órdenes de compra: Pendiente y Procesado.
+- Recepciones: Procesado.
+- Compras: Recibido, Concretado, Pendiente y Anulado.
+- Ventas/Facturación: Cobrado y Anulado.
+
+Validación:
+- WAR compilado con Maven.
+- ZIP/WAR íntegros.
+- Plantillas Jasper modificadas compiladas correctamente.

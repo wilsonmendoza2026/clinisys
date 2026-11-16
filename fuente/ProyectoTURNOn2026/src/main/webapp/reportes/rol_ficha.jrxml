@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FichaRol" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55af1ffc-6613-4190-b10e-5af2f612b5f1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_rol" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+    r.id_rol,
+    r.nombre_rol,
+    r.descripcion,
+    COALESCE(
+        string_agg(
+            m.nombre_modulo || ': ' ||
+            COALESCE(
+                NULLIF(
+                    CONCAT_WS(', ',
+                        CASE WHEN rm.puede_ver THEN 'Ver' END,
+                        CASE WHEN rm.puede_crear THEN 'Crear' END,
+                        CASE WHEN rm.puede_editar THEN 'Editar' END,
+                        CASE WHEN rm.puede_eliminar THEN 'Eliminar' END
+                    ),
+                    ''
+                ),
+                'Sin acciones'
+            ),
+            ', ' ORDER BY m.id_modulo
+        ),
+        'Sin permisos'
+    ) AS permiso_modulo
+FROM roles r
+LEFT JOIN roles_modulos rm 
+       ON rm.id_rol = r.id_rol
+LEFT JOIN modulos m 
+       ON m.id_modulo = rm.id_modulo
+WHERE r.id_rol = $P{id_rol}
+GROUP BY 
+    r.id_rol,
+    r.nombre_rol,
+    r.descripcion;
+]]>
+	</queryString>
+	<field name="id_rol" class="java.lang.Integer"/>
+	<field name="nombre_rol" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="permiso_modulo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<rectangle radius="5">
+				<reportElement x="0" y="0" width="555" height="75" backcolor="#008055" uuid="e30c11b1-2139-4f81-8723-5e92bd41fa31"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="10" width="555" height="32" forecolor="#FFFFFF" uuid="8ca63c4a-54de-4752-bdb2-8d85ef528c42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="22" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ClinicSys"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="42" width="555" height="20" forecolor="#FFFFFF" uuid="889a6884-366b-4dfd-aead-f15d3964ed1c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FICHA TÉCNICA DE ROL | San Lorenzo, Paraguay – Tel. 0986-896-425"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="280" splitType="Stretch">
+			<rectangle radius="4">
+				<reportElement x="0" y="0" width="555" height="260" backcolor="#FFFFFF" uuid="a41f87b8-d218-4a92-b42d-20d43a5e8c10"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineColor="#2C3E50"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement x="0" y="0" width="555" height="35" backcolor="#2C3E50" uuid="78b7bdf0-4b6e-4f01-a1b2-c11f77bda309"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="15" y="0" width="525" height="35" forecolor="#FFFFFF" uuid="53a1523a-59b3-4f9e-a89b-90f7724a1012"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFORMACIÓN DETALLADA DEL ROL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="55" width="140" height="20" forecolor="#2C3E50" uuid="b1942fb8-2a1c-4b35-8622-c8fa5d209123"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código / ID del Rol:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="55" width="375" height="20" forecolor="#333333" uuid="6d1f92a1-12c8-4770-b1d1-67823f6e1211"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_rol}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="20" y="80" width="515" height="1" forecolor="#E0E0E0" uuid="f98e100c-7832-4731-bc66-3d74f8859123"/>
+			</line>
+			<staticText>
+				<reportElement x="20" y="95" width="140" height="20" forecolor="#2C3E50" uuid="3d2105e1-8843-41a0-8a1a-45c11bc19124"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre del Rol:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="95" width="375" height="20" forecolor="#333333" uuid="2a5fb129-3b60-4927-a00d-587fae87d101"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_rol}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="20" y="120" width="515" height="1" forecolor="#E0E0E0" uuid="e892110c-1234-4531-bc66-3d74f8859124"/>
+			</line>
+			<staticText>
+				<reportElement x="20" y="135" width="140" height="20" forecolor="#2C3E50" uuid="8851f893-9cbf-48d6-95e5-4a1120091255"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Permiso de Módulo:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="135" width="375" height="20" forecolor="#008055" uuid="5a228380-60b8-4c12-8703-a4e98f029a12"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{permiso_modulo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="20" y="160" width="515" height="1" forecolor="#E0E0E0" uuid="a719200c-5678-4731-bc66-3d74f8859125"/>
+			</line>
+			<staticText>
+				<reportElement x="20" y="175" width="140" height="20" forecolor="#2C3E50" uuid="098f9182-124d-459f-9e73-d82012091266"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción / Funciones:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="160" y="175" width="375" height="65" forecolor="#333333" uuid="d9f8290e-8021-4d33-bc28-98e3b238e818"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" forecolor="#008055" uuid="e04a8128-7836-460b-add8-a64151bacd6c"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="8" width="150" height="20" forecolor="#666666" uuid="6c55772e-0c5c-4db8-9544-ec45f7e022ab"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="403" y="8" width="152" height="20" forecolor="#666666" uuid="c2a01817-ba00-4b2b-bde0-0041a6b0af1f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

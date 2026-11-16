@@ -1,0 +1,5 @@
+Corrección del error HTTP 500 en roles.jsp
+
+La pantalla de roles ya no usa el objeto JSP request dentro de una declaración.
+La ruta se envía como argumento al método de permisos, compatible con Tomcat/Jasper.
+El WAR fue recompilado y verificado.

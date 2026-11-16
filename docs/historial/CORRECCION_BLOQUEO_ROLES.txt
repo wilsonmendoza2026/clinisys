@@ -1,0 +1,8 @@
+Corrección definitiva de seguridad por roles
+
+El encabezado común ahora valida en el servidor el permiso Ver de la página actual.
+No solo oculta el enlace: también devuelve HTTP 403 si el usuario escribe manualmente
+la URL de un módulo no autorizado.
+
+Los permisos granulares tienen prioridad para los roles configurados. Los roles antiguos
+sin configuración granular conservan el esquema anterior.

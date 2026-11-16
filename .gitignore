@@ -1,0 +1,17 @@
+fuente/**/target/
+*.war
+*.class
+*.log
+*.tmp
+Thumbs.db
+desktop.ini
+nbproject/private/
+.idea/
+portable/runtime/
+portable/postgres/
+portable/tomcat/
+portable/data/
+portable/logs/
+portable/config/
+portable/backups/*
+!portable/backups/sistema_nutricion_inicial.dump

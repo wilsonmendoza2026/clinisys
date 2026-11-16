@@ -1,0 +1,5 @@
+Corrección visual del menú lateral
+
+La condición JavaScript que ocultaba enlaces con permisos granulares estaba invertida.
+Ahora los módulos sin permiso Ver se ocultan del menú cuando el rol usa configuración
+granular. La protección HTTP 403 del servidor se mantiene como seguridad adicional.

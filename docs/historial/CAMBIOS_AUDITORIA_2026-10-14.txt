@@ -1,0 +1,30 @@
+CLINICSYS - CORRECCIONES SEGUN INFORME DEL PROFESOR (14/10/2026)
+
+QUE SE CAMBIO
+1. Control de sesion explicito en 65 archivos JSP (paginas y controladores).
+   - Paginas: si no hay login -> redirige a login.jsp.
+   - Controladores/AJAX: si no hay login -> HTTP 401.
+   - Antes 10 archivos respondian SIN login (ObtenerMedicosPorEspecialidad.java.jsp,
+     dashboard_visual.jsp, informes_master_detail_controlador.jsp, obtener_cierre_datos.jsp,
+     footer.jsp, referencias_estilos.jsp, referencias_js.jsp, inventariocontrolador.jsp, etc.).
+2. usuarios.jsp: el boton "reporte individual" apuntaba a una pagina inexistente
+   (reportes/reporte_usuario_individual.jsp). Ahora usa usuarioscontrolador.jsp?tipo=reporte_individual.
+3. reportesControlador.jsp: se corrigieron entradas que apuntaban a .jasper inexistentes
+   (compras, ventas, inventario, metodospagos, ordenescompra) y se quito "caja".
+4. reportes/facturaventa.jasper: ahora viene compilado (antes solo existia el .jrxml).
+5. Recepciones (recepcioncontrolador.jsp / recepciondecompras.jsp):
+   - Guarda tambien recepciones_detalle (cant_pedida / cant_recibida / precio / subtotal).
+   - Calcula y guarda recepciones.total (el informe por rango lo mostraba en 0).
+   - "Ver Items" ahora lee recepciones_detalle (con respaldo a detalles_recepciones para recepciones viejas).
+   - Todo dentro de UNA transaccion (commit / rollback).
+   - Nueva accion ANULAR (boton en el historial): revierte stock, marca ANULADO y reabre la orden.
+   - Exige elegir Orden de Compra (la columna orden_id es NOT NULL; antes daba error generico).
+6. iniciar_clinicsys.bat abria el puerto 8080; Tomcat escucha en 8084. Corregido.
+7. tomcat/webapps/ProyectoTURNOn2026.war agregado (el zip recibido no traia la app desplegada).
+
+BASE DE DATOS
+- No cambia la estructura. Opcional: ejecutar aplicar_mejoras_bd.bat (usa mejoras_bd.sql) para completar
+  recepciones_detalle y total de recepciones antiguas. Es repetible y no borra nada.
+
+NO SE TOCO
+- Ninguna clase Java, pom.xml, ni la logica de ventas, citas, roles, usuarios, informes.

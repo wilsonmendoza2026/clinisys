@@ -1,0 +1,6 @@
+Corrección adicional del alta de usuarios
+
+Si la primera escritura del hash no puede validarse en una instalación PostgreSQL existente,
+el alta ejecuta automáticamente un segundo rehash usando exactamente el mismo UPDATE que
+se utiliza al editar usuarios. Solo muestra éxito después de que esa segunda validación
+confirma que la contraseña funciona.
